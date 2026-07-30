@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>클래스 트리 (ClassTree) - 유치원 시즌제 챌린지</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Desktop App Container Wrapper -->
+  <div id="desktop-wrapper">
+    <div id="phone-container">
+      <!-- App Header Bar -->
+      <div id="app-status-bar">
+        <span class="time">09:41</span>
+        <div class="status-icons">
+          <i class="fa-solid fa-signal"></i>
+          <i class="fa-solid fa-wifi"></i>
+          <i class="fa-solid fa-battery-full"></i>
+        </div>
+      </div>
+
+      <!-- Active Screen View Container -->
+      <main id="app-view"></main>
+
+      <!-- Bottom Navigation Bar (Shown on main views) -->
+      <nav id="bottom-nav" class="hidden">
+        <button class="nav-item active" data-view="dashboard">
+          <div class="nav-icon"><i class="fa-solid fa-tree"></i></div>
+          <span>우리나무</span>
+        </button>
+        <button class="nav-item" data-view="missions">
+          <div class="nav-icon"><i class="fa-solid fa-list-check"></i></div>
+          <span>미션</span>
+        </button>
+        <button class="nav-item" data-view="roadmap">
+          <div class="nav-icon"><i class="fa-solid fa-route"></i></div>
+          <span>주간챌린지</span>
+        </button>
+        <button class="nav-item" data-view="profile">
+          <div class="nav-icon"><i class="fa-solid fa-user-astronaut"></i></div>
+          <span>내정보</span>
+        </button>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Printable PDF Certificate Report Template (Hidden, only visible when window.print() is called) -->
+  <div id="print-report-container" style="display: none;">
+    <div style="border: 10px double #2B7A41; padding: 40px; text-align: center; border-radius: 20px; background: #FFF;">
+      <h1 style="font-size: 32px; color: #2B7A41; margin-bottom: 10px;">🏆 1년 성장 & 바른 습관 성취 증서</h1>
+      <p style="font-size: 16px; color: #555; margin-bottom: 30px;">유치원 학급 공동체 챌린지 - 클래스 트리 (ClassTree)</p>
+      
+      <div style="display: flex; justify-content: space-around; margin-bottom: 40px; text-align: left;">
+        <div>
+          <p><strong>원 아 이 름:</strong> 김행복 어린이</p>
+          <p><strong>소 속 학 급:</strong> 7세 햇살반</p>
+          <p><strong>총 획득포인트:</strong> 450P</p>
+        </div>
+        <div>
+          <p><strong>이 수 시 즌:</strong> 5개 시즌 전체 완수</p>
+          <p><strong>발 행 기 관:</strong> 햇살유치원 원장</p>
+          <p><strong>발 행 일 자:</strong> 2026년 02월 28일</p>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid #DDD; padding-top: 20px; text-align: left; margin-bottom: 40px;">
+        <h3 style="color: #2B7A41; margin-bottom: 10px;">담임선생님 칭찬 및 평가 총평:</h3>
+        <p style="line-height: 1.6; font-size: 15px;">
+          위 어린이는 1년 동안 진행된 클래스 트리 5대 시즌 캠페인(환경나무, 안전로봇, 독서기차, 무지개성, 추억퍼즐)에 모범적으로 참여하여, 가정과 유치원에서 바른 생활 습관을 스스로 실천하고 학급 공동체 발전에 크게 기여하였으므로 이 증서를 수여합니다.
+        </p>
+      </div>
+
+      <div style="margin-top: 60px; font-weight: bold; font-size: 18px;">
+        햇 살 유 치 원 장 (직인 생략)
+      </div>
+    </div>
+  </div>
+
+  <!-- App Script -->
+  <script src="app.js?v=20260730_v23"></script>
+</body>
+</html>
