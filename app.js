@@ -401,18 +401,11 @@
           </div>
         </div>
 
-        <div class="main-tree-card" style="position: relative;">
+        <div class="main-tree-card">
           <div class="particle-field" id="particle-field"></div>
           <div class="season-title-pill">
             ${season.seasonTag} • ${activeStage.name}
           </div>
-
-          ${equippedObj ? `
-            <div class="equipped-aura-badge">
-              <span>${equippedObj.aura}</span>
-              <span>${equippedObj.name} 장착중</span>
-            </div>
-          ` : ''}
           
           <div class="tree-display" id="interactive-tree">
             <img src="${activeStage.image}" alt="${activeStage.name}">
