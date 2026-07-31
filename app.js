@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ClassTree (클래스 트리) - 사진 인증 시 자동 피드 등록 & 프레임 모달 연동
+   ClassTree (클래스 트리) - 아바타 장착 아이템 실시간 대시보드 3D 캐릭터 연동
    ========================================================================== */
 
 (function() {
@@ -64,9 +64,12 @@
     }
   }
 
-  function getMobileContainer() {
-    return document.getElementById('mobile-frame') || document.body;
-  }
+  const AVATAR_SHOP_ITEMS = [
+    { id: 'item_bird', name: '반짝이는 빛새', icon: '✨', aura: '🕊️', cost: 100, desc: '3D 캐릭터 주변에 빛새가 오라처럼 날아다녀요!' },
+    { id: 'item_dew', name: '이슬방울 세트', icon: '💧', aura: '💧', cost: 50, desc: '3D 캐릭터에 싱그러운 이슬 오라가 생성돼요!' },
+    { id: 'item_lamp', name: '햇살 램프', icon: '☀️', aura: '☀️', cost: 250, desc: '3D 캐릭터 상단에 따뜻한 조명 장착!' },
+    { id: 'item_ribbon', name: '무지개 리본', icon: '🎀', aura: '🎀', cost: 150, desc: '3D 캐릭터와 내 프로필에 무지개 리본 장착!' }
+  ];
 
   const DAILY_MISSION_BANK = {
     check: [
@@ -106,7 +109,7 @@
     { title: '친구에게 고마운 마음 나눔 실천하기', req: '0회 / 1회 진행중', points: 250, emoji: '🎁', desc: '나눔 기쁨 칭찬상' }
   ];
 
-  const CACHE_BUST = '?v=20260730_v21';
+  const CACHE_BUST = '?v=20260731_v25';
   const TARGET_TOTAL_PHOTOS = 1200;
 
   const SEASONS_DATA = {
@@ -207,9 +210,10 @@
     user: {
       name: '김행복 어린이',
       class: '7세 햇살반',
-      points: 100,
+      points: 500,
       badges: ['🌱 첫 미소 씨앗 도장'],
-      equippedItems: []
+      equippedItem: 'item_bird',
+      inventory: ['item_bird']
     },
 
     dailyRefreshLeft: 1,
@@ -374,6 +378,7 @@
     else currentStageIndex = 0;
 
     const activeStage = season.stages[currentStageIndex];
+    const equippedObj = AVATAR_SHOP_ITEMS.find(x => x.id === state.user.equippedItem);
 
     const html = `
       <div class="dashboard-screen">
@@ -396,11 +401,18 @@
           </div>
         </div>
 
-        <div class="main-tree-card">
+        <div class="main-tree-card" style="position: relative;">
           <div class="particle-field" id="particle-field"></div>
           <div class="season-title-pill">
             ${season.seasonTag} • ${activeStage.name}
           </div>
+
+          ${equippedObj ? `
+            <div class="equipped-aura-badge">
+              <span>${equippedObj.aura}</span>
+              <span>${equippedObj.name} 장착중</span>
+            </div>
+          ` : ''}
           
           <div class="tree-display" id="interactive-tree">
             <img src="${activeStage.image}" alt="${activeStage.name}">
@@ -501,7 +513,6 @@
     });
   }
 
-  // 우리 반 친구들 사진 인증 피드 전체보기 전용 카드뉴스 모달!
   function openFullFeedModal() {
     playSFX('pop');
 
@@ -625,11 +636,11 @@
       </div>
     `;
 
-    getMobileContainer().insertAdjacentHTML('beforeend', modalHtml);
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
 
     document.getElementById('btn-close-guide').addEventListener('click', () => {
       playSFX('pop');
-      const modal = getMobileContainer().querySelector('.modal-backdrop');
+      const modal = document.querySelector('.modal-backdrop');
       if (modal) modal.remove();
     });
   }
@@ -661,20 +672,20 @@
       </div>
     `;
 
-    getMobileContainer().insertAdjacentHTML('beforeend', modalHtml);
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
 
     document.querySelectorAll('.season-opt-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const id = btn.dataset.id;
         changeSeason(id);
-        const modal = getMobileContainer().querySelector('.modal-backdrop');
+        const modal = document.querySelector('.modal-backdrop');
         if (modal) modal.remove();
       });
     });
 
     document.getElementById('btn-close-season').addEventListener('click', () => {
       playSFX('pop');
-      const modal = getMobileContainer().querySelector('.modal-backdrop');
+      const modal = document.querySelector('.modal-backdrop');
       if (modal) modal.remove();
     });
   }
@@ -1009,11 +1020,11 @@
       </div>
     `;
 
-    getMobileContainer().insertAdjacentHTML('beforeend', modalHtml);
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
 
     document.getElementById('btn-modal-done').addEventListener('click', () => {
       playSFX('pop');
-      const modal = getMobileContainer().querySelector('.modal-backdrop');
+      const modal = document.querySelector('.modal-backdrop');
       if (modal) modal.remove();
       switchView('dashboard');
     });
@@ -1120,6 +1131,8 @@
   }
 
   function renderProfileScreen() {
+    const equippedObj = AVATAR_SHOP_ITEMS.find(x => x.id === state.user.equippedItem);
+
     const html = `
       <div class="profile-screen">
         <div class="top-bar" style="margin-bottom: 12px;">
@@ -1129,8 +1142,11 @@
         </div>
 
         <div class="profile-card-top">
-          <div class="profile-avatar-big">🧒</div>
-          <h2 style="font-size: 19px; font-weight: 900;">${state.user.name}</h2>
+          <div class="profile-avatar-big" style="position: relative; display: inline-block;">
+            🧒
+            ${equippedObj ? `<span style="position: absolute; bottom: -4px; right: -4px; font-size: 24px;">${equippedObj.aura}</span>` : ''}
+          </div>
+          <h2 style="font-size: 19px; font-weight: 900; margin-top: 6px;">${state.user.name}</h2>
           <p style="font-size: 12px; color: var(--color-text-sub);">${state.user.class}</p>
           
           <div class="coin-balance-pill">
@@ -1170,37 +1186,38 @@
         </div>
 
         <div class="section-header">
-          <h3 class="section-title">✨ 앱 내 아바타 꾸미기 상점</h3>
+          <h3 class="section-title">✨ 3D 캐릭터 & 아바타 장착 상점</h3>
         </div>
 
         <div class="shop-grid">
-          <div class="shop-item-card">
-            <div class="shop-item-icon">✨</div>
-            <div style="font-weight: 800; font-size: 13px;">반짝이는 빛새</div>
-            <div style="font-size: 11px; color: var(--color-text-sub);">100P</div>
-            <button class="shop-buy-btn" data-cost="100">구매/장착</button>
-          </div>
+          ${AVATAR_SHOP_ITEMS.map(item => {
+            const isEquipped = state.user.equippedItem === item.id;
+            const isOwned = state.user.inventory.includes(item.id);
 
-          <div class="shop-item-card">
-            <div class="shop-item-icon">💧</div>
-            <div style="font-weight: 800; font-size: 13px;">이슬방울 세트</div>
-            <div style="font-size: 11px; color: var(--color-text-sub);">50P</div>
-            <button class="shop-buy-btn" data-cost="50">구매/장착</button>
-          </div>
+            let btnText = `${item.cost}P 구매/장착`;
+            let btnStyle = 'background: var(--theme-header-gradient); color: #FFF;';
 
-          <div class="shop-item-card">
-            <div class="shop-item-icon">☀️</div>
-            <div style="font-weight: 800; font-size: 13px;">햇살 램프</div>
-            <div style="font-size: 11px; color: var(--color-text-sub);">250P</div>
-            <button class="shop-buy-btn" data-cost="250">구매/장착</button>
-          </div>
+            if (isEquipped) {
+              btnText = '✓ 장착중 (해제)';
+              btnStyle = 'background: #22C55E; color: #FFF; font-weight: 900;';
+            } else if (isOwned) {
+              btnText = '장착하기';
+              btnStyle = 'background: #3B82F6; color: #FFF; font-weight: 900;';
+            }
 
-          <div class="shop-item-card">
-            <div class="shop-item-icon">🎀</div>
-            <div style="font-weight: 800; font-size: 13px;">무지개 리본</div>
-            <div style="font-size: 11px; color: var(--color-text-sub);">150P</div>
-            <button class="shop-buy-btn" data-cost="150">구매/장착</button>
-          </div>
+            return `
+              <div class="shop-item-card">
+                <div class="shop-item-icon">${item.icon}</div>
+                <div style="font-weight: 800; font-size: 13px;">${item.name}</div>
+                <div style="font-size: 10px; color: var(--color-text-sub); margin-top: 2px; height: 28px; line-height: 1.2;">
+                  ${item.desc}
+                </div>
+                <button class="shop-equip-item-btn" data-id="${item.id}" data-cost="${item.cost}" data-name="${item.name}" style="width: 100%; padding: 7px; border-radius: 12px; font-size: 11px; border: none; margin-top: 8px; cursor: pointer; ${btnStyle}">
+                  ${btnText}
+                </button>
+              </div>
+            `;
+          }).join('')}
         </div>
       </div>
     `;
@@ -1229,16 +1246,39 @@
       });
     });
 
-    appView.querySelectorAll('.shop-buy-btn').forEach(btn => {
+    appView.querySelectorAll('.shop-equip-item-btn').forEach(btn => {
       btn.addEventListener('click', () => {
+        const id = btn.dataset.id;
         const cost = parseInt(btn.dataset.cost);
+        const name = btn.dataset.name;
+
+        if (state.user.equippedItem === id) {
+          playSFX('pop');
+          state.user.equippedItem = null;
+          alert(`✨ "${name}" 장착을 해제했습니다.`);
+          renderProfileScreen();
+          return;
+        }
+
+        if (state.user.inventory.includes(id)) {
+          playSFX('fanfare');
+          state.user.equippedItem = id;
+          alert(`✨ "${name}" 아이템을 성공적으로 장착했습니다!\n메인 대시보드의 3D 캐릭터 옆에 장착 아이템이 표시됩니다.`);
+          renderProfileScreen();
+          return;
+        }
+
         if (state.user.points >= cost) {
-          playSFX('coin');
+          playSFX('fanfare');
           state.user.points -= cost;
-          alert('🎉 아이템을 성공적으로 구매하고 내 오브젝트에 장착했습니다!');
+          state.user.inventory.push(id);
+          state.user.equippedItem = id;
+          if (window.confetti) confetti({ particleCount: 80, spread: 80, origin: { y: 0.5 } });
+          alert(`🎉 축하합니다!\n"${name}" 구매 및 장착 완료! (-${cost}P)\n메인 대시보드의 3D 캐릭터와 내 프로필에 장착 아이템이 적용되었습니다!`);
           renderProfileScreen();
         } else {
-          alert('포인트가 부족해요! 미션을 수행하고 포인트를 더 모아보세요.');
+          playSFX('pop');
+          alert(`포인트가 부족해요! (필요: ${cost}P / 현재: ${state.user.points}P)\n일일/주간 미션을 수행하고 포인트를 더 모아보세요.`);
         }
       });
     });
@@ -1294,7 +1334,7 @@
       </div>
     `;
 
-    getMobileContainer().insertAdjacentHTML('beforeend', modalHtml);
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
 
     document.getElementById('btn-share-kakao').addEventListener('click', () => {
       playSFX('pop');
@@ -1308,7 +1348,7 @@
 
     document.getElementById('btn-close-cert').addEventListener('click', () => {
       playSFX('pop');
-      const modal = getMobileContainer().querySelector('.modal-backdrop');
+      const modal = document.querySelector('.modal-backdrop');
       if (modal) modal.remove();
     });
   }
