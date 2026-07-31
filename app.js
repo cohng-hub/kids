@@ -501,7 +501,7 @@
     });
   }
 
-  // 우리 반 친구들 사진 인증 피드 전체보기 전용 모달!
+  // 우리 반 친구들 사진 인증 피드 전체보기 전용 카드뉴스 모달!
   function openFullFeedModal() {
     playSFX('pop');
 
@@ -510,7 +510,7 @@
         <div class="feed-modal-card">
           <div class="feed-modal-header">
             <div class="feed-modal-title">
-              📸 우리 반 친구들 사진 인증 피드
+              📸 우리 반 사진 인증 카드뉴스
             </div>
             <button class="icon-btn" id="btn-close-full-feed" style="width: 32px; height: 32px;">✕</button>
           </div>
@@ -526,23 +526,25 @@
               <div class="full-feed-item-card">
                 <div class="full-feed-item-header">
                   <div class="full-feed-user-info">
-                    <div class="full-feed-user-avatar">👤</div>
-                    <span class="full-feed-user-name">${f.name}</span>
+                    <div class="full-feed-user-avatar">🧒</div>
+                    <div>
+                      <div class="full-feed-user-name">${f.name}</div>
+                      <div class="full-feed-time">${f.time || '오늘 인증 📸'}</div>
+                    </div>
                   </div>
-                  <span class="full-feed-time">${f.time || '오늘 인증 📸'}</span>
+                  <span class="full-feed-badge-tag">📸 학급성장 +1</span>
                 </div>
 
                 <div class="full-feed-img-box">
                   <img src="${f.photo}" alt="${f.name}" class="full-feed-img">
-                  <span class="full-feed-badge-tag">학급성장 +1</span>
                 </div>
 
                 <div class="full-feed-item-body">
                   <div class="full-feed-mission-title">${f.mission || '오늘의 사진 인증 실천'}</div>
                   
                   <div class="full-feed-item-footer">
-                    <span class="teacher-stamp-badge">👩‍🏫 참 잘했어요! 도장 부착</span>
-                    <button class="like-btn" data-id="${f.id}" style="font-size: 12px; font-weight: 800; background: #FFF0F5; border: 1px solid #FFB6C1; padding: 4px 10px; border-radius: 16px; color: #E6005C; cursor: pointer;">
+                    <span class="teacher-stamp-badge">👩‍🏫 참 잘했어요!</span>
+                    <button class="like-btn" data-id="${f.id}">
                       ${f.liked ? '❤️' : '🤍'} 칭찬하기 ${f.likes || 0}
                     </button>
                   </div>
@@ -551,16 +553,16 @@
             `).join('')}
           </div>
 
-          <button class="btn-confirm-full" id="btn-modal-feed-done">닫기</button>
+          <button class="btn-confirm-full" id="btn-modal-feed-done" style="margin-top: 4px;">닫기</button>
         </div>
       </div>
     `;
 
-    getMobileContainer().insertAdjacentHTML('beforeend', modalHtml);
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
 
     const closeModal = () => {
       playSFX('pop');
-      const modal = getMobileContainer().querySelector('.modal-backdrop');
+      const modal = document.querySelector('.modal-backdrop');
       if (modal) modal.remove();
       renderDashboardScreen();
     };
@@ -576,7 +578,7 @@
         if (f) {
           f.liked = !f.liked;
           f.likes = f.liked ? (f.likes + 1) : Math.max(0, f.likes - 1);
-          const modal = getMobileContainer().querySelector('.modal-backdrop');
+          const modal = document.querySelector('.modal-backdrop');
           if (modal) modal.remove();
           openFullFeedModal();
         }
