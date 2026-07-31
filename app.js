@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ClassTree (클래스 트리) - 아바타 장착 아이템 실시간 대시보드 3D 캐릭터 연동
+   ClassTree (클래스 트리) - 어린이 메이플스토리풍 SD 개별 마스코트 연동
    ========================================================================== */
 
 (function() {
@@ -64,11 +64,13 @@
     }
   }
 
+  const CACHE_BUST = '?v=20260731_v27';
+
   const AVATAR_SHOP_ITEMS = [
-    { id: 'item_bird', name: '반짝이는 빛새', icon: '✨', aura: '🕊️', cost: 100, desc: '3D 캐릭터 주변에 빛새가 오라처럼 날아다녀요!' },
-    { id: 'item_dew', name: '이슬방울 세트', icon: '💧', aura: '💧', cost: 50, desc: '3D 캐릭터에 싱그러운 이슬 오라가 생성돼요!' },
-    { id: 'item_lamp', name: '햇살 램프', icon: '☀️', aura: '☀️', cost: 250, desc: '3D 캐릭터 상단에 따뜻한 조명 장착!' },
-    { id: 'item_ribbon', name: '무지개 리본', icon: '🎀', aura: '🎀', cost: 150, desc: '3D 캐릭터와 내 프로필에 무지개 리본 장착!' }
+    { id: 'item_bird', name: '반짝이는 빛새 펫', icon: '✨', aura: '🕊️', asset: './assets/classtree_avatar_bird.png' + CACHE_BUST, cost: 100, desc: '내 꼬마 마스코트 캐릭터 옆에 빛새 펫이 훨훨 날아다녀요!' },
+    { id: 'item_dew', name: '이슬방울 오라 세트', icon: '💧', aura: '💧', asset: '', cost: 50, desc: '내 마스코트 주변에 반짝이는 맑은 이슬 오라가 감싸요!' },
+    { id: 'item_lamp', name: '햇살 램프 크라운', icon: '☀️', aura: '☀️', asset: '', cost: 250, desc: '내 마스코트 머리 위에 따뜻한 햇살 조명이 켜져요!' },
+    { id: 'item_ribbon', name: '무지개 리본 머리띠', icon: '🎀', aura: '🎀', asset: './assets/classtree_avatar_ribbon.png' + CACHE_BUST, cost: 150, desc: '내 마스코트 머리 위에 커다란 귀요미 리본 착용!' }
   ];
 
   const DAILY_MISSION_BANK = {
@@ -109,7 +111,6 @@
     { title: '친구에게 고마운 마음 나눔 실천하기', req: '0회 / 1회 진행중', points: 250, emoji: '🎁', desc: '나눔 기쁨 칭찬상' }
   ];
 
-  const CACHE_BUST = '?v=20260731_v25';
   const TARGET_TOTAL_PHOTOS = 1200;
 
   const SEASONS_DATA = {
@@ -212,8 +213,8 @@
       class: '7세 햇살반',
       points: 500,
       badges: ['🌱 첫 미소 씨앗 도장'],
-      equippedItem: 'item_bird',
-      inventory: ['item_bird']
+      equippedItem: 'item_ribbon',
+      inventory: ['item_ribbon', 'item_bird']
     },
 
     dailyRefreshLeft: 1,
@@ -422,6 +423,25 @@
             <p class="progress-subtext">
               * <strong>사진 인증 미션 완료시에만</strong> 학급 성장이 진행됩니다! (일반 미션은 개인 P 적립)
             </p>
+          </div>
+        </div>
+
+        <!-- 메이플스토리 스타일 개인 마스코트 응원존 -->
+        <div class="personal-mascot-cheer-card">
+          <div class="mascot-avatar-container">
+            <img src="./assets/classtree_avatar_base.png${CACHE_BUST}" class="mascot-base-img" alt="내 마스코트">
+            ${equippedObj && equippedObj.id === 'item_bird' ? `<img src="./assets/classtree_avatar_bird.png${CACHE_BUST}" class="mascot-accessory-pet" alt="빛새 펫">` : ''}
+            ${equippedObj && equippedObj.id === 'item_ribbon' ? `<img src="./assets/classtree_avatar_ribbon.png${CACHE_BUST}" class="mascot-accessory-hat" alt="무지개 리본">` : ''}
+            ${equippedObj && equippedObj.aura ? `<div class="mascot-aura-effect">${equippedObj.aura}</div>` : ''}
+          </div>
+          <div class="mascot-cheer-info">
+            <div class="mascot-nametag">
+              <span>🧒 ${state.user.name}의 꼬마 마스코트</span>
+              ${equippedObj ? `<span class="mascot-item-badge">${equippedObj.icon} ${equippedObj.name}</span>` : ''}
+            </div>
+            <div class="mascot-speech-bubble">
+              "햇살반 친구들아 힘내! 함께 학급 성장을 이뤄내자! 🌳✨"
+            </div>
           </div>
         </div>
 
@@ -1130,19 +1150,23 @@
       <div class="profile-screen">
         <div class="top-bar" style="margin-bottom: 12px;">
           <button class="icon-btn" id="btn-go-home-p" title="역할선택" style="width: 34px; height: 34px;">🏠</button>
-          <span style="font-weight: 900; font-size: 14px;">마이페이지 & 포인트 상점</span>
+          <span style="font-weight: 900; font-size: 14px;">마이페이지 &amp; 포인트 상점</span>
           <div></div>
         </div>
 
-        <div class="profile-card-top">
-          <div class="profile-avatar-big" style="position: relative; display: inline-block;">
-            🧒
-            ${equippedObj ? `<span style="position: absolute; bottom: -4px; right: -4px; font-size: 24px;">${equippedObj.aura}</span>` : ''}
+        <div class="profile-card-top" style="position: relative;">
+          <!-- 메이플스토리 스타일 SD 개별 마스코트 가꾸기 카드 -->
+          <div class="mascot-avatar-container-large">
+            <img src="./assets/classtree_avatar_base.png${CACHE_BUST}" class="mascot-base-img-large" alt="내 메이플 마스코트">
+            ${equippedObj && equippedObj.id === 'item_bird' ? `<img src="./assets/classtree_avatar_bird.png${CACHE_BUST}" class="mascot-accessory-pet-large" alt="빛새 펫">` : ''}
+            ${equippedObj && equippedObj.id === 'item_ribbon' ? `<img src="./assets/classtree_avatar_ribbon.png${CACHE_BUST}" class="mascot-accessory-hat-large" alt="무지개 리본">` : ''}
+            ${equippedObj && equippedObj.aura ? `<div class="mascot-aura-effect-large">${equippedObj.aura}</div>` : ''}
           </div>
-          <h2 style="font-size: 19px; font-weight: 900; margin-top: 6px;">${state.user.name}</h2>
-          <p style="font-size: 12px; color: var(--color-text-sub);">${state.user.class}</p>
+
+          <h2 style="font-size: 19px; font-weight: 900; margin-top: 10px;">${state.user.name}</h2>
+          <p style="font-size: 12px; color: var(--color-text-sub);">${state.user.class} • 🍁 메이플 꼬마 마스코트</p>
           
-          <div class="coin-balance-pill">
+          <div class="coin-balance-pill" style="margin-top: 10px;">
             🪙 보유 포인트: <strong style="font-size: 16px;">${state.user.points}P</strong>
           </div>
         </div>
@@ -1153,36 +1177,10 @@
         </button>
 
         <div class="section-header">
-          <h3 class="section-title">🎟️ 실물 보상 쿠폰 상점 (포인트 교환)</h3>
+          <h3 class="section-title">🍁 메이플스토리풍 꼬마 마스코트 꾸미기 상점</h3>
         </div>
 
-        <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px;">
-          ${state.realCoupons.map(c => `
-            <div class="mission-item-card" style="background: linear-gradient(135deg, #FFFFFF 0%, #FFFDF0 100%); border-color: #FFE066;">
-              <div class="mission-info">
-                <div class="mission-icon" style="font-size: 26px; background: #FFF9E6;">${c.emoji}</div>
-                <div>
-                  <div class="mission-text-title">${c.title}</div>
-                  <div style="font-size: 11px; color: #B27B00; font-weight: 800;">
-                    ${c.cost} P 교환 가능 • ${c.type === 'parent' ? '🏠 가정 보상' : '🏫 학급 보상'}
-                  </div>
-                  <div style="font-size: 10px; color: var(--color-text-sub); margin-top: 2px;">
-                    ${c.desc}
-                  </div>
-                </div>
-              </div>
-              <button class="shop-buy-coupon-btn" data-id="${c.id}" data-cost="${c.cost}" data-title="${c.title}" style="padding: 8px 14px; border-radius: 20px; background: linear-gradient(135deg, #FFD23F 0%, #FF8811 100%); color: #333; font-weight: 900; border: none; cursor: pointer; font-size: 12px;">
-                쿠폰 교환
-              </button>
-            </div>
-          `).join('')}
-        </div>
-
-        <div class="section-header">
-          <h3 class="section-title">✨ 3D 캐릭터 & 아바타 장착 상점</h3>
-        </div>
-
-        <div class="shop-grid">
+        <div class="shop-grid" style="margin-bottom: 22px;">
           ${AVATAR_SHOP_ITEMS.map(item => {
             const isEquipped = state.user.equippedItem === item.id;
             const isOwned = state.user.inventory.includes(item.id);
@@ -1211,6 +1209,32 @@
               </div>
             `;
           }).join('')}
+        </div>
+
+        <div class="section-header">
+          <h3 class="section-title">🎟️ 실물 보상 쿠폰 상점 (포인트 교환)</h3>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px;">
+          ${state.realCoupons.map(c => `
+            <div class="mission-item-card" style="background: linear-gradient(135deg, #FFFFFF 0%, #FFFDF0 100%); border-color: #FFE066;">
+              <div class="mission-info">
+                <div class="mission-icon" style="font-size: 26px; background: #FFF9E6;">${c.emoji}</div>
+                <div>
+                  <div class="mission-text-title">${c.title}</div>
+                  <div style="font-size: 11px; color: #B27B00; font-weight: 800;">
+                    ${c.cost} P 교환 가능 • ${c.type === 'parent' ? '🏠 가정 보상' : '🏫 학급 보상'}
+                  </div>
+                  <div style="font-size: 10px; color: var(--color-text-sub); margin-top: 2px;">
+                    ${c.desc}
+                  </div>
+                </div>
+              </div>
+              <button class="shop-buy-coupon-btn" data-id="${c.id}" data-cost="${c.cost}" data-title="${c.title}" style="padding: 8px 14px; border-radius: 20px; background: linear-gradient(135deg, #FFD23F 0%, #FF8811 100%); color: #333; font-weight: 900; border: none; cursor: pointer; font-size: 12px;">
+                쿠폰 교환
+              </button>
+            </div>
+          `).join('')}
         </div>
       </div>
     `;
@@ -1256,7 +1280,7 @@
         if (state.user.inventory.includes(id)) {
           playSFX('fanfare');
           state.user.equippedItem = id;
-          alert(`✨ "${name}" 아이템을 성공적으로 장착했습니다!\n메인 대시보드의 3D 캐릭터 옆에 장착 아이템이 표시됩니다.`);
+          alert(`✨ "${name}" 아이템을 내 꼬마 마스코트에 성공적으로 장착했습니다!`);
           renderProfileScreen();
           return;
         }
@@ -1267,7 +1291,7 @@
           state.user.inventory.push(id);
           state.user.equippedItem = id;
           if (window.confetti) confetti({ particleCount: 80, spread: 80, origin: { y: 0.5 } });
-          alert(`🎉 축하합니다!\n"${name}" 구매 및 장착 완료! (-${cost}P)\n메인 대시보드의 3D 캐릭터와 내 프로필에 장착 아이템이 적용되었습니다!`);
+          alert(`🎉 축하합니다!\n"${name}" 구매 및 내 꼬마 마스코트 장착 완료! (-${cost}P)`);
           renderProfileScreen();
         } else {
           playSFX('pop');
