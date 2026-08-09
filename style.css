@@ -1052,6 +1052,19 @@ body {
   cursor: pointer;
 }
 
+.teacher-theme-card {
+  transition: all 0.2s ease;
+}
+
+.teacher-theme-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(46, 117, 89, 0.12);
+}
+
+.teacher-theme-card.active-card {
+  box-shadow: 0 4px 14px rgba(46, 117, 89, 0.2);
+}
+
 .profile-screen {
   padding: 16px;
 }
