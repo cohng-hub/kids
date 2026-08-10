@@ -846,6 +846,7 @@
     switch (state.currentView) {
       case 'welcome': renderWelcomeScreen(); break;
       case 'dashboard': renderDashboardScreen(); break;
+      case 'theme-detail': renderThemeDetailScreen(); break;
       case 'missions': renderMissionsScreen(); break;
       case 'roadmap': renderRoadmapScreen(); break;
       case 'camera': renderCameraScreen(); break;
@@ -896,25 +897,11 @@
   }
 
   function renderDashboardScreen() {
-    const theme = THEMES_CATALOG[state.activeThemeId] || THEMES_CATALOG['hangeul'];
-    const photos = state.classPhotoAuthCount[state.activeThemeId] || 0;
-    const targetPhotos = state.targetPhotos || 600;
-    const progress = Math.min(100, Math.floor((photos / targetPhotos) * 100));
-
-    let currentStageIndex = 0;
-    const step = Math.floor(targetPhotos / 5);
-    if (photos >= targetPhotos) currentStageIndex = 5;
-    else if (photos >= step * 4) currentStageIndex = 4;
-    else if (photos >= step * 3) currentStageIndex = 3;
-    else if (photos >= step * 2) currentStageIndex = 2;
-    else if (photos >= step * 1) currentStageIndex = 1;
-    else currentStageIndex = 0;
-
-    const activeStage = theme.stages[currentStageIndex];
     const equippedObj = AVATAR_SHOP_ITEMS.find(x => x.id === state.user.equippedItem);
 
     const html = `
       <div class="dashboard-screen">
+        <!-- 상단 내 학급 & 정보 헤더 -->
         <div class="top-bar">
           <div class="class-badge">
             <button class="icon-btn" id="btn-go-home" title="역할선택" style="margin-right: 2px;">
@@ -930,39 +917,11 @@
             <button class="season-selector-btn" id="btn-open-guide-modal" style="background-color: var(--color-primary-light); color: var(--color-primary-dark); border-color: var(--color-primary-dark);">
               <span>📖 도감</span>
             </button>
-            <button class="season-selector-btn" id="btn-open-season-picker">
-              <span>${theme.tag}</span>
-              <span>▼</span>
-            </button>
           </div>
         </div>
 
-        <div class="main-tree-card">
-          <div class="particle-field" id="particle-field"></div>
-          <div class="season-title-pill">
-            ${theme.name} • ${activeStage.name}
-          </div>
-          
-          <div class="tree-display" id="interactive-tree">
-            <img src="${activeStage.image}" alt="${activeStage.name}">
-          </div>
-
-          <div class="progress-card">
-            <div class="progress-header">
-              <span>📸 학급 누적 사진 인증 (1개월)</span>
-              <span class="highlight">${photos} / ${targetPhotos}회 (${progress}%)</span>
-            </div>
-            <div class="progress-track">
-              <div class="progress-fill" style="width: ${progress}%;"></div>
-            </div>
-            <p class="progress-subtext">
-              * <strong>사진 인증 미션 완료시에만</strong> 학급 성장이 진행됩니다! (일반 미션은 개인 P 적립)
-            </p>
-          </div>
-        </div>
-
-        <!-- 메이플스토리 스타일 개인 마스코트 응원존 -->
-        <div class="personal-mascot-cheer-card">
+        <!-- 메이플 마스코트 & 프로필 환영 존 -->
+        <div class="personal-mascot-cheer-card" style="margin-bottom: 16px;">
           <div class="mascot-avatar-container">
             <img src="./assets/classtree_avatar_base.png${CACHE_BUST}" class="mascot-base-img" alt="내 마스코트">
             ${equippedObj && equippedObj.id === 'item_bird' ? `<img src="./assets/classtree_avatar_bird.png${CACHE_BUST}" class="mascot-accessory-pet" alt="빛새 펫">` : ''}
@@ -971,29 +930,58 @@
           </div>
           <div class="mascot-cheer-info">
             <div class="mascot-nametag">
-              <span>🧒 ${state.user.name}의 꼬마 마스코트</span>
-              ${equippedObj ? `<span class="mascot-item-badge">${equippedObj.icon} ${equippedObj.name}</span>` : ''}
+              <span>🧒 ${state.user.name}</span>
+              <span style="font-size: 11px; background: #FEF08A; color: #854D0E; padding: 2px 8px; border-radius: 10px; font-weight: 900;">🪙 ${state.user.points}P</span>
             </div>
             <div class="mascot-speech-bubble">
-              "햇살반 친구들아 힘내! 이번 달 '${theme.tag}' 학급 프로젝트 꼭 완성하자! ✨"
+              "안녕! 아래 10가지 신나는 테마 놀이 중 원하는 세상을 골라 놀아보자! ✨"
             </div>
           </div>
         </div>
 
-        <div class="action-grid">
-          <button class="action-card action-card-primary" id="btn-open-camera">
-            <div class="action-icon" style="background: rgba(255,255,255,0.3); font-size: 20px;">📸</div>
-            <span class="action-title">오늘의 사진<br>인증하기 (+학급성장)</span>
-          </button>
-          <button class="action-card action-card-secondary" id="btn-teacher-msg">
-            <div class="action-icon" style="background: #FFF9E6; font-size: 20px;">💬</div>
-            <span class="action-title">선생님 칭찬<br>한마디</span>
-          </button>
+        <!-- 🎨 메인 10대 테마 놀이 세상 카드 갤러리 (직접 배치) -->
+        <div class="theme-hub-header">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <span style="font-size: 11px; font-weight: 800; background: rgba(255,255,255,0.25); padding: 3px 8px; border-radius: 10px;">누리과정 10대 놀이 세상</span>
+            <span style="font-size: 11px; font-weight: 800;">총 10개 테마 탐험 🚀</span>
+          </div>
+          <h2 style="font-size: 18px; font-weight: 900; margin: 4px 0;">🎨 유치원 10대 테마 놀이 보관소</h2>
+          <p style="font-size: 11px; opacity: 0.9; line-height: 1.3;">
+            원하는 테마 카드를 클릭하여 테마별 전용 놀이 공간으로 입장해보세요!
+          </p>
+        </div>
+
+        <div class="theme-hub-grid">
+          ${Object.values(THEMES_CATALOG).map(t => {
+            const count = state.classPhotoAuthCount[t.id] || 0;
+            const stageIdx = Math.min(5, Math.floor(count / 100));
+            const currentStage = t.stages[stageIdx] || t.stages[0];
+
+            return `
+              <div class="theme-card-item" data-id="${t.id}">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                  <span class="theme-card-badge">${t.category}</span>
+                  <span style="font-size: 10px; font-weight: 900; color: var(--color-primary-dark); background: var(--color-primary-light); padding: 2px 8px; border-radius: 8px;">
+                    ${currentStage.name.split(':')[0]}
+                  </span>
+                </div>
+
+                <div class="theme-card-title">${t.name}</div>
+                <div class="theme-card-desc">${t.desc}</div>
+
+                <img src="${currentStage.image}" alt="${t.name}" class="theme-card-img-preview">
+
+                <button class="theme-play-btn btn-enter-theme-play" data-id="${t.id}">
+                  🎮 [${t.tag}] 놀이 세상으로 입장하기 ➔
+                </button>
+              </div>
+            `;
+          }).join('')}
         </div>
 
         <div class="feed-section">
           <div class="section-header">
-            <h3 class="section-title">우리 반 친구들 사진 인증 피드</h3>
+            <h3 class="section-title">우리 반 친구들 활동 자랑 피드</h3>
             <button class="link-more" id="btn-open-full-feed" style="background: none; border: none; font-size: 11px; color: var(--color-primary-dark); font-weight: 800; cursor: pointer;">
               모두보기 ➔
             </button>
@@ -1003,7 +991,7 @@
               <div class="feed-card">
                 <div class="feed-img-wrapper">
                   <img src="${f.photo}" alt="${f.name}" class="feed-img">
-                  <span class="feed-tag">Photo Auth +1</span>
+                  <span class="feed-tag">Play Activity</span>
                 </div>
                 <div class="feed-footer">
                   <div class="feed-user">
@@ -1024,42 +1012,267 @@
     document.getElementById('btn-go-home').addEventListener('click', () => { playSFX('pop'); switchView('welcome'); });
     document.getElementById('btn-open-data-loader').addEventListener('click', openDataLoaderModal);
     document.getElementById('btn-open-guide-modal').addEventListener('click', openGrowthGuideModal);
-    document.getElementById('btn-open-season-picker').addEventListener('click', openSeasonPickerModal);
-    document.getElementById('btn-open-camera').addEventListener('click', () => { playSFX('pop'); switchView('camera'); });
     document.getElementById('btn-open-full-feed').addEventListener('click', openFullFeedModal);
-    document.getElementById('btn-teacher-msg').addEventListener('click', () => {
-      playSFX('pop');
-      alert(`💌 담임선생님의 ${theme.tag} 칭찬 메시지:\n"햇살반 어린이들! 이번 달 챌린지 600회 도달해서 교실 보물상자를 엽시다!"`);
+
+    appView.querySelectorAll('.btn-enter-theme-play').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const themeId = btn.dataset.id;
+        enterThemePlayWorld(themeId);
+      });
     });
 
-    const treeElem = document.getElementById('interactive-tree');
-    treeElem.addEventListener('click', (e) => {
-      playSFX('pop');
-      treeElem.classList.add('bounce');
-      setTimeout(() => treeElem.classList.remove('bounce'), 500);
-
-      const field = document.getElementById('particle-field');
-      const particle = document.createElement('div');
-      particle.className = 'particle';
-      particle.innerText = theme.particles[Math.floor(Math.random() * theme.particles.length)];
-      particle.style.left = (e.offsetX || 80) + 'px';
-      particle.style.top = (e.offsetY || 80) + 'px';
-      field.appendChild(particle);
-      setTimeout(() => particle.remove(), 1000);
+    appView.querySelectorAll('.theme-card-item').forEach(card => {
+      card.addEventListener('click', () => {
+        const themeId = card.dataset.id;
+        enterThemePlayWorld(themeId);
+      });
     });
 
     appView.querySelectorAll('.like-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
         playSFX('pop');
         const id = parseInt(btn.dataset.id);
         const f = state.friends.find(x => x.id === id);
         if (f) {
           f.liked = !f.liked;
-          f.likes = f.liked ? (f.likes + 1) : Math.max(0, f.likes - 1);
+          f.likes = f.liked ? (f.likes + 1) : (f.likes - 1);
           renderDashboardScreen();
         }
       });
     });
+  }
+
+  function enterThemePlayWorld(themeId) {
+    playSFX('pop');
+    state.activeThemeId = themeId;
+    saveStateToLocalStorage();
+    switchView('theme-detail');
+  }
+
+  function renderThemeDetailScreen() {
+    const theme = THEMES_CATALOG[state.activeThemeId] || THEMES_CATALOG['hangeul'];
+    const photos = state.classPhotoAuthCount[state.activeThemeId] || 0;
+    const targetPhotos = state.targetPhotos || 600;
+
+    let currentStageIndex = 0;
+    const step = Math.floor(targetPhotos / 5);
+    if (photos >= targetPhotos) currentStageIndex = 5;
+    else if (photos >= step * 4) currentStageIndex = 4;
+    else if (photos >= step * 3) currentStageIndex = 3;
+    else if (photos >= step * 2) currentStageIndex = 2;
+    else if (photos >= step * 1) currentStageIndex = 1;
+    else currentStageIndex = 0;
+
+    const activeStage = theme.stages[currentStageIndex];
+
+    const html = `
+      <div class="theme-play-screen">
+        <div class="top-bar" style="margin-bottom: 14px;">
+          <button class="icon-btn" id="btn-back-to-hub" style="width: 36px; height: 36px;">❮</button>
+          <span style="font-weight: 900; font-size: 14px;">${theme.tag} 전용 놀이 세상</span>
+          <button class="season-selector-btn" id="btn-open-data-loader-t" style="background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%); color: #FFF; border: none; font-weight: 800;">
+            📥 데이터
+          </button>
+        </div>
+
+        <div class="theme-play-hero">
+          <div class="particle-field" id="theme-particle-field"></div>
+          <span class="guide-stage-badge badge-unlocked" style="font-size: 11px; padding: 3px 10px;">${theme.category} 놀이 세상</span>
+          <h2 style="font-size: 18px; font-weight: 900; margin-top: 6px; color: var(--color-primary-dark);">
+            ${theme.name}
+          </h2>
+          <p style="font-size: 12px; color: var(--color-text-sub); margin-top: 4px;">
+            ${activeStage.name} • ${activeStage.desc}
+          </p>
+
+          <img src="${activeStage.image}" alt="${activeStage.name}" class="theme-play-img" id="interactive-theme-img">
+
+          <div style="font-size: 12px; font-weight: 800; color: var(--color-primary-dark); margin-top: 8px;">
+            ✨ 마스코트를 터치하면 신나는 소리와 이펙트가 나와요!
+          </div>
+        </div>
+
+        <!-- 테마별 전용 놀이 활동 구역 -->
+        <div class="play-activity-box">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <h3 style="font-size: 15px; font-weight: 900; color: var(--color-text-main);">🎮 ${theme.tag} 인터랙티브 미션 놀이</h3>
+            <span style="font-size: 11px; font-weight: 800; background: #FEF08A; color: #854D0E; padding: 2px 8px; border-radius: 10px;">+50P 적립</span>
+          </div>
+
+          ${renderThemePlayContent(theme.id)}
+        </div>
+
+        <button class="btn-confirm-full" id="btn-return-dashboard" style="margin-top: 10px;">
+          🏠 10대 테마 메인 보관소로 돌아가기
+        </button>
+      </div>
+    `;
+
+    appView.innerHTML = html;
+
+    document.getElementById('btn-back-to-hub').addEventListener('click', () => { playSFX('pop'); switchView('dashboard'); });
+    document.getElementById('btn-return-dashboard').addEventListener('click', () => { playSFX('pop'); switchView('dashboard'); });
+    document.getElementById('btn-open-data-loader-t').addEventListener('click', openDataLoaderModal);
+
+    const themeImg = document.getElementById('interactive-theme-img');
+    if (themeImg) {
+      themeImg.addEventListener('click', (e) => {
+        playSFX('pop');
+        themeImg.classList.add('bounce');
+        setTimeout(() => themeImg.classList.remove('bounce'), 500);
+
+        const field = document.getElementById('theme-particle-field');
+        if (field) {
+          const particle = document.createElement('div');
+          particle.className = 'particle';
+          particle.innerText = theme.particles[Math.floor(Math.random() * theme.particles.length)];
+          particle.style.left = (e.offsetX || 60) + 'px';
+          particle.style.top = (e.offsetY || 60) + 'px';
+          field.appendChild(particle);
+          setTimeout(() => particle.remove(), 1000);
+        }
+      });
+    }
+
+    bindThemePlayEvents(theme.id);
+  }
+
+  function renderThemePlayContent(themeId) {
+    if (themeId === 'hangeul') {
+      return `
+        <div style="font-size: 13px; color: #333; line-height: 1.4;">
+          <strong>🔤 세종대왕 말놀이 퀴즈:</strong> 아래에서 예쁜 한글 단어를 완성해보세요!
+        </div>
+        <div class="interactive-play-area">
+          <div style="font-size: 24px; font-weight: 900; letter-spacing: 4px; color: #2563EB; margin-bottom: 8px;" id="hangeul-word-display">
+            [ ? ? ]
+          </div>
+          <div class="play-choice-grid">
+            <button class="play-choice-btn btn-hangeul-quiz" data-word="사랑">💖 사랑 (사-랑)</button>
+            <button class="play-choice-btn btn-hangeul-quiz" data-word="무지개">🌈 무지개</button>
+            <button class="play-choice-btn btn-hangeul-quiz" data-word="햇살">☀️ 햇살</button>
+            <button class="play-choice-btn btn-hangeul-quiz" data-word="칭찬">👏 칭찬</button>
+          </div>
+        </div>
+      `;
+    } else if (themeId === 'number') {
+      return `
+        <div style="font-size: 13px; color: #333; line-height: 1.4;">
+          <strong>🔢 알록달록 수세 로봇:</strong> 로봇의 숫자를 1씩 높여 보물 숫자를 완성하세요!
+        </div>
+        <div class="interactive-play-area">
+          <div style="font-size: 32px; font-weight: 900; color: #7C3AED; margin: 8px 0;" id="number-count-display">
+            🤖 카운터: <span id="robot-num-val">1</span>
+          </div>
+          <button id="btn-count-robot-num" class="theme-play-btn" style="background: linear-gradient(135deg, #7C3AED 0%, #C084FC 100%);">
+            ⚡ 수 세기 카운터 누르기 (+1)
+          </button>
+        </div>
+      `;
+    } else if (themeId === 'env') {
+      return `
+        <div style="font-size: 13px; color: #333; line-height: 1.4;">
+          <strong>🌱 그린 분리수거 게임:</strong> 올바른 재활용 분리수거 통을 터치하세요!
+        </div>
+        <div class="interactive-play-area">
+          <div style="font-size: 28px; margin-bottom: 8px;">🍾 페트병 / 종이 / 캔 쓰레기</div>
+          <div class="play-choice-grid">
+            <button class="play-choice-btn btn-env-recycle" data-type="plastic">♻️ 플라스틱함</button>
+            <button class="play-choice-btn btn-env-recycle" data-type="paper">📄 종이함</button>
+            <button class="play-choice-btn btn-env-recycle" data-type="can">🥫 캔/고철함</button>
+            <button class="play-choice-btn btn-env-recycle" data-type="glass">🍾 유리함</button>
+          </div>
+        </div>
+      `;
+    } else if (themeId === 'emotion') {
+      return `
+        <div style="font-size: 13px; color: #333; line-height: 1.4;">
+          <strong>💖 감정 우체국 마음 처방전:</strong> 오늘 내 마음 기분을 솔직히 골라보세요!
+        </div>
+        <div class="interactive-play-area">
+          <div class="play-choice-grid">
+            <button class="play-choice-btn btn-emotion-pick" data-emo="기쁨">😊 기뻐요!</button>
+            <button class="play-choice-btn btn-emotion-pick" data-emo="설렘">🥰 설레요!</button>
+            <button class="play-choice-btn btn-emotion-pick" data-emo="속상">😢 속상해요</button>
+            <button class="play-choice-btn btn-emotion-pick" data-emo="화남">😤 화나요</button>
+          </div>
+        </div>
+      `;
+    } else {
+      return `
+        <div style="font-size: 13px; color: #333; line-height: 1.4;">
+          <strong>✨ 체험 미션:</strong> 버튼을 눌러 신나는 미션 활동을 수행하세요!
+        </div>
+        <div class="interactive-play-area">
+          <button id="btn-generic-play-action" class="theme-play-btn">
+            🎉 미션 놀이 완료하고 포인트 받기!
+          </button>
+        </div>
+      `;
+    }
+  }
+
+  function bindThemePlayEvents(themeId) {
+    appView.querySelectorAll('.btn-hangeul-quiz').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const word = btn.dataset.word;
+        playSFX('fanfare');
+        state.user.points += 50;
+        saveStateToLocalStorage();
+        if (window.confetti) confetti({ particleCount: 80, spread: 70, origin: { y: 0.5 } });
+        alert(`🎉 정답입니다! "${word}" 단어를 완성했습니다! (+50P 적립)`);
+      });
+    });
+
+    const numBtn = document.getElementById('btn-count-robot-num');
+    if (numBtn) {
+      let count = 1;
+      numBtn.addEventListener('click', () => {
+        count++;
+        playSFX('coin');
+        document.getElementById('robot-num-val').innerText = count;
+        if (count % 5 === 0) {
+          state.user.points += 50;
+          saveStateToLocalStorage();
+          if (window.confetti) confetti({ particleCount: 80, spread: 70, origin: { y: 0.5 } });
+          alert(`🎉 수 세기 ${count} 달성! 보너스 50P 적립!`);
+        }
+      });
+    }
+
+    appView.querySelectorAll('.btn-env-recycle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        playSFX('fanfare');
+        state.user.points += 50;
+        saveStateToLocalStorage();
+        if (window.confetti) confetti({ particleCount: 80, spread: 70, origin: { y: 0.5 } });
+        alert(`♻️ 분리배출 성공! 지구를 구하는 그린 챔피언! (+50P 적립)`);
+      });
+    });
+
+    appView.querySelectorAll('.btn-emotion-pick').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const emo = btn.dataset.emo;
+        playSFX('fanfare');
+        state.user.points += 50;
+        saveStateToLocalStorage();
+        if (window.confetti) confetti({ particleCount: 80, spread: 70, origin: { y: 0.5 } });
+        alert(`💖 오늘 나의 "${emo}" 마음을 나누어 주어 고마워요! (+50P 따뜻한 마음 처방전 전달)`);
+      });
+    });
+
+    const genericBtn = document.getElementById('btn-generic-play-action');
+    if (genericBtn) {
+      genericBtn.addEventListener('click', () => {
+        playSFX('fanfare');
+        state.user.points += 50;
+        saveStateToLocalStorage();
+        if (window.confetti) confetti({ particleCount: 80, spread: 70, origin: { y: 0.5 } });
+        alert(`🎉 미션 완료! 50P 보상이 적립되었습니다!`);
+      });
+    }
   }
 
   function openFullFeedModal() {
