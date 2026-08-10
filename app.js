@@ -813,20 +813,7 @@
 
   function switchView(viewName) {
     state.currentView = viewName;
-    bottomNav.querySelectorAll('.nav-item').forEach(btn => {
-      if (btn.dataset.view === viewName) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
-    });
-
-    if (viewName === 'welcome' || viewName === 'camera' || viewName === 'tv') {
-      bottomNav.classList.add('hidden');
-    } else {
-      bottomNav.classList.remove('hidden');
-    }
-
+    bottomNav.classList.add('hidden');
     render();
   }
 
@@ -897,149 +884,64 @@
   }
 
   function renderDashboardScreen() {
-    const equippedObj = AVATAR_SHOP_ITEMS.find(x => x.id === state.user.equippedItem);
-
     const html = `
       <div class="dashboard-screen">
-        <!-- 상단 내 학급 & 정보 헤더 -->
-        <div class="top-bar">
-          <div class="class-badge">
-            <button class="icon-btn" id="btn-go-home" title="역할선택" style="margin-right: 2px;">
-              🏠
-            </button>
-            <span>${state.user.class} (${state.students.length}명)</span>
+        <!-- 상단 헤더 & 데이터 불러오기 -->
+        <div class="top-bar" style="margin-bottom: 14px;">
+          <div class="brand-logo" style="font-size: 18px; font-weight: 900; color: var(--color-primary-dark); display: flex; align-items: center; gap: 6px;">
+            🌱 CLASS TREE
           </div>
           
-          <div style="display: flex; gap: 5px;">
-            <button class="season-selector-btn" id="btn-open-data-loader" style="background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%); color: #FFF; border: none; font-weight: 800;">
-              <span>📥 데이터 불러오기</span>
-            </button>
-            <button class="season-selector-btn" id="btn-open-guide-modal" style="background-color: var(--color-primary-light); color: var(--color-primary-dark); border-color: var(--color-primary-dark);">
-              <span>📖 도감</span>
-            </button>
-          </div>
+          <button class="season-selector-btn" id="btn-open-data-loader" style="background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%); color: #FFF; border: none; font-weight: 800; padding: 6px 12px; border-radius: 14px;">
+            <span>📥 데이터 불러오기</span>
+          </button>
         </div>
 
-        <!-- 메이플 마스코트 & 프로필 환영 존 -->
-        <div class="personal-mascot-cheer-card" style="margin-bottom: 16px;">
-          <div class="mascot-avatar-container">
-            <img src="./assets/classtree_avatar_base.png${CACHE_BUST}" class="mascot-base-img" alt="내 마스코트">
-            ${equippedObj && equippedObj.id === 'item_bird' ? `<img src="./assets/classtree_avatar_bird.png${CACHE_BUST}" class="mascot-accessory-pet" alt="빛새 펫">` : ''}
-            ${equippedObj && equippedObj.id === 'item_ribbon' ? `<img src="./assets/classtree_avatar_ribbon.png${CACHE_BUST}" class="mascot-accessory-hat" alt="무지개 리본">` : ''}
-            ${equippedObj && equippedObj.aura ? `<div class="mascot-aura-effect">${equippedObj.aura}</div>` : ''}
-          </div>
-          <div class="mascot-cheer-info">
-            <div class="mascot-nametag">
-              <span>🧒 ${state.user.name}</span>
-              <span style="font-size: 11px; background: #FEF08A; color: #854D0E; padding: 2px 8px; border-radius: 10px; font-weight: 900;">🪙 ${state.user.points}P</span>
-            </div>
-            <div class="mascot-speech-bubble">
-              "안녕! 아래 10가지 신나는 테마 놀이 중 원하는 세상을 골라 놀아보자! ✨"
-            </div>
-          </div>
-        </div>
-
-        <!-- 🎨 메인 10대 테마 놀이 세상 카드 갤러리 (직접 배치) -->
-        <div class="theme-hub-header">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-            <span style="font-size: 11px; font-weight: 800; background: rgba(255,255,255,0.25); padding: 3px 8px; border-radius: 10px;">누리과정 10대 놀이 세상</span>
-            <span style="font-size: 11px; font-weight: 800;">총 10개 테마 탐험 🚀</span>
-          </div>
-          <h2 style="font-size: 18px; font-weight: 900; margin: 4px 0;">🎨 유치원 10대 테마 놀이 보관소</h2>
-          <p style="font-size: 11px; opacity: 0.9; line-height: 1.3;">
-            원하는 테마 카드를 클릭하여 테마별 전용 놀이 공간으로 입장해보세요!
+        <!-- 메인 히어로 타이틀 카드 -->
+        <div class="theme-hub-header" style="text-align: center; padding: 22px 16px; margin-bottom: 20px;">
+          <span style="font-size: 11px; font-weight: 800; background: rgba(255,255,255,0.25); padding: 4px 12px; border-radius: 12px;">유치원 누리과정 10대 테마 놀이</span>
+          <h1 style="font-size: 22px; font-weight: 900; margin: 8px 0; letter-spacing: -0.5px;">🎨 10대 테마 놀이 세상</h1>
+          <p style="font-size: 12px; opacity: 0.95; line-height: 1.4; margin-top: 4px;">
+            원하는 테마 버튼을 터치하여 테마 전용 세상으로 바로 놀이를 시작해보세요!
           </p>
         </div>
 
-        <div class="theme-hub-grid">
-          ${Object.values(THEMES_CATALOG).map(t => {
-            const count = state.classPhotoAuthCount[t.id] || 0;
-            const stageIdx = Math.min(5, Math.floor(count / 100));
-            const currentStage = t.stages[stageIdx] || t.stages[0];
+        <!-- 🎨 첫 페이지 10대 테마 선택 버튼 그리드 (10 Themes Select Buttons) -->
+        <div class="theme-button-grid">
+          ${Object.values(THEMES_CATALOG).map((t, idx) => {
+            const currentStage = t.stages[0];
 
             return `
-              <div class="theme-card-item" data-id="${t.id}">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                  <span class="theme-card-badge">${t.category}</span>
-                  <span style="font-size: 10px; font-weight: 900; color: var(--color-primary-dark); background: var(--color-primary-light); padding: 2px 8px; border-radius: 8px;">
-                    ${currentStage.name.split(':')[0]}
-                  </span>
+              <button class="theme-select-btn" data-id="${t.id}">
+                <div class="theme-btn-top">
+                  <span class="theme-btn-num">0${idx + 1}</span>
+                  <span class="theme-btn-category">${t.category}</span>
                 </div>
+                
+                <div class="theme-btn-title">${t.name}</div>
+                <div class="theme-btn-desc">${t.desc}</div>
 
-                <div class="theme-card-title">${t.name}</div>
-                <div class="theme-card-desc">${t.desc}</div>
+                <img src="${currentStage.image}" alt="${t.name}" class="theme-btn-img">
 
-                <img src="${currentStage.image}" alt="${t.name}" class="theme-card-img-preview">
-
-                <button class="theme-play-btn btn-enter-theme-play" data-id="${t.id}">
-                  🎮 [${t.tag}] 놀이 세상으로 입장하기 ➔
-                </button>
-              </div>
+                <div class="theme-btn-action">
+                  <span>▶ [${t.tag}] 놀이 시작하기</span>
+                  <span>➔</span>
+                </div>
+              </button>
             `;
           }).join('')}
-        </div>
-
-        <div class="feed-section">
-          <div class="section-header">
-            <h3 class="section-title">우리 반 친구들 활동 자랑 피드</h3>
-            <button class="link-more" id="btn-open-full-feed" style="background: none; border: none; font-size: 11px; color: var(--color-primary-dark); font-weight: 800; cursor: pointer;">
-              모두보기 ➔
-            </button>
-          </div>
-          <div class="feed-scroll">
-            ${state.friends.map(f => `
-              <div class="feed-card">
-                <div class="feed-img-wrapper">
-                  <img src="${f.photo}" alt="${f.name}" class="feed-img">
-                  <span class="feed-tag">Play Activity</span>
-                </div>
-                <div class="feed-footer">
-                  <div class="feed-user">
-                    <div class="feed-avatar">👤</div>
-                    <span>${f.name}</span>
-                  </div>
-                  <button class="like-btn" data-id="${f.id}">${f.liked ? '❤️' : '🤍'} ${f.likes || ''}</button>
-                </div>
-              </div>
-            `).join('')}
-          </div>
         </div>
       </div>
     `;
 
     appView.innerHTML = html;
 
-    document.getElementById('btn-go-home').addEventListener('click', () => { playSFX('pop'); switchView('welcome'); });
     document.getElementById('btn-open-data-loader').addEventListener('click', openDataLoaderModal);
-    document.getElementById('btn-open-guide-modal').addEventListener('click', openGrowthGuideModal);
-    document.getElementById('btn-open-full-feed').addEventListener('click', openFullFeedModal);
 
-    appView.querySelectorAll('.btn-enter-theme-play').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
+    appView.querySelectorAll('.theme-select-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
         const themeId = btn.dataset.id;
         enterThemePlayWorld(themeId);
-      });
-    });
-
-    appView.querySelectorAll('.theme-card-item').forEach(card => {
-      card.addEventListener('click', () => {
-        const themeId = card.dataset.id;
-        enterThemePlayWorld(themeId);
-      });
-    });
-
-    appView.querySelectorAll('.like-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        playSFX('pop');
-        const id = parseInt(btn.dataset.id);
-        const f = state.friends.find(x => x.id === id);
-        if (f) {
-          f.liked = !f.liked;
-          f.likes = f.liked ? (f.likes + 1) : (f.likes - 1);
-          renderDashboardScreen();
-        }
       });
     });
   }
