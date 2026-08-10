@@ -678,16 +678,16 @@
           </p>
 
           <div style="margin-bottom: 14px;">
-            <div style="font-size: 11px; font-weight: 800; color: #0284C7; margin-bottom: 6px;">✨ 프리셋 학급 데이터 세트 불러오기</div>
+            <div style="font-size: 11px; font-weight: 800; color: #0284C7; margin-bottom: 6px;">✨ 난이도별 프리셋 데이터 세트 불러오기</div>
             <div style="display: flex; flex-direction: column; gap: 6px;">
-              <button class="btn-modal-preset" data-preset="haetsal" style="padding: 10px; border-radius: 12px; background: #F0F9FF; border: 1.5px solid #0284C7; color: #0369A1; font-weight: 800; font-size: 12px; text-align: left; cursor: pointer;">
-                ☀️ 7세 햇살반 불러오기 (인증 420회 / 포인트 850P)
+              <button class="btn-modal-preset" data-preset="level1" style="padding: 10px; border-radius: 12px; background: #ECFDF5; border: 1.5px solid #10B981; color: #047857; font-weight: 800; font-size: 12px; text-align: left; cursor: pointer;">
+                🌱 1단계 (기초/씨앗) 불러오기 (쉬움 난이도 세트)
               </button>
-              <button class="btn-modal-preset" data-preset="saessak" style="padding: 10px; border-radius: 12px; background: #ECFDF5; border: 1.5px solid #10B981; color: #047857; font-weight: 800; font-size: 12px; text-align: left; cursor: pointer;">
-                🌱 6세 새싹반 불러오기 (모범완수 600회 / 만점반)
+              <button class="btn-modal-preset" data-preset="level2" style="padding: 10px; border-radius: 12px; background: #F0F9FF; border: 1.5px solid #0284C7; color: #0369A1; font-weight: 800; font-size: 12px; text-align: left; cursor: pointer;">
+                🌿 2단계 (보통/줄기) 불러오기 (중급 난이도 세트)
               </button>
-              <button class="btn-modal-preset" data-preset="yeolmae" style="padding: 10px; border-radius: 12px; background: #FFF1F2; border: 1.5px solid #F43F5E; color: #BE123C; font-weight: 800; font-size: 12px; text-align: left; cursor: pointer;">
-                🍎 5세 열매반 불러오기 (신규개학 45회 / 첫 출발)
+              <button class="btn-modal-preset" data-preset="level3" style="padding: 10px; border-radius: 12px; background: #F3E8FF; border: 1.5px solid #A855F7; color: #7E22CE; font-weight: 800; font-size: 12px; text-align: left; cursor: pointer;">
+                🌳 3단계 (도전/나무) 불러오기 (도전 난이도 세트)
               </button>
             </div>
           </div>
@@ -920,7 +920,8 @@
     else if (photos >= step * 1) currentStageIndex = 1;
     else currentStageIndex = 0;
 
-    const activeStage = theme.stages[currentStageIndex];
+    const currentLevel = state.currentLevel || 1;
+    const levelBadge = currentLevel === 1 ? '🌱 1단계 (기초)' : currentLevel === 2 ? '🌿 2단계 (보통)' : '🌳 3단계 (도전)';
 
     const html = `
       <div class="theme-play-screen">
@@ -934,7 +935,11 @@
 
         <div class="theme-play-hero">
           <div class="particle-field" id="theme-particle-field"></div>
-          <span class="guide-stage-badge badge-unlocked" style="font-size: 11px; padding: 3px 10px;">${theme.category} 놀이 세상</span>
+          <div style="display: flex; justify-content: center; gap: 6px; margin-bottom: 4px;">
+            <span class="guide-stage-badge badge-unlocked" style="font-size: 11px; padding: 3px 10px;">${theme.category} 놀이 세상</span>
+            <span class="guide-stage-badge" style="font-size: 11px; padding: 3px 10px; background: #2563EB; color: #FFF;">${levelBadge}</span>
+          </div>
+
           <h2 style="font-size: 18px; font-weight: 900; margin-top: 6px; color: var(--color-primary-dark);">
             ${theme.name}
           </h2>
@@ -949,18 +954,36 @@
           </div>
         </div>
 
+        <!-- 🎯 연령별 난이도 1,2,3단계 선택 바 (유치원 공통) -->
+        <div style="background: #F8FAFC; border-radius: 16px; padding: 12px; margin-bottom: 14px; text-align: center; border: 1.5px solid #E2E8F0;">
+          <div style="font-size: 12px; font-weight: 900; color: #334155; margin-bottom: 8px;">
+            🎯 콘텐츠 난이도 단계 선택 (유치원 공통)
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button class="btn-select-level" data-level="1" style="flex: 1; padding: 8px 4px; border-radius: 12px; font-weight: 800; font-size: 11px; cursor: pointer; border: 2px solid ${currentLevel === 1 ? '#22C55E' : '#CBD5E1'}; background: ${currentLevel === 1 ? '#DCFCE7' : '#FFF'}; color: ${currentLevel === 1 ? '#15803D' : '#64748B'};">
+              🌱 1단계 (기초)
+            </button>
+            <button class="btn-select-level" data-level="2" style="flex: 1; padding: 8px 4px; border-radius: 12px; font-weight: 800; font-size: 11px; cursor: pointer; border: 2px solid ${currentLevel === 2 ? '#3B82F6' : '#CBD5E1'}; background: ${currentLevel === 2 ? '#DBEAFE' : '#FFF'}; color: ${currentLevel === 2 ? '#1D4ED8' : '#64748B'};">
+              🌿 2단계 (보통)
+            </button>
+            <button class="btn-select-level" data-level="3" style="flex: 1; padding: 8px 4px; border-radius: 12px; font-weight: 800; font-size: 11px; cursor: pointer; border: 2px solid ${currentLevel === 3 ? '#A855F7' : '#CBD5E1'}; background: ${currentLevel === 3 ? '#F3E8FF' : '#FFF'}; color: ${currentLevel === 3 ? '#7E22CE' : '#64748B'};">
+              🌳 3단계 (도전)
+            </button>
+          </div>
+        </div>
+
         <!-- 테마별 전용 놀이 활동 구역 -->
         <div class="play-activity-box">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <h3 style="font-size: 15px; font-weight: 900; color: var(--color-text-main);">🎮 ${theme.tag} 인터랙티브 미션 놀이</h3>
+            <h3 style="font-size: 15px; font-weight: 900; color: var(--color-text-main);">🎮 ${theme.tag} 인터랙티브 미션 (${levelBadge})</h3>
             <span style="font-size: 11px; font-weight: 800; background: #FEF08A; color: #854D0E; padding: 2px 8px; border-radius: 10px;">+50P 적립</span>
           </div>
 
-          ${renderThemePlayContent(theme.id)}
+          ${renderThemePlayContent(theme.id, currentLevel)}
         </div>
 
         <button class="btn-confirm-full" id="btn-return-dashboard" style="margin-top: 10px;">
-          🏠 10대 테마 메인 보관소로 돌아가기
+          🏠 10대 테마 첫 페이지로 돌아가기
         </button>
       </div>
     `;
@@ -970,6 +993,15 @@
     document.getElementById('btn-back-to-hub').addEventListener('click', () => { playSFX('pop'); switchView('dashboard'); });
     document.getElementById('btn-return-dashboard').addEventListener('click', () => { playSFX('pop'); switchView('dashboard'); });
     document.getElementById('btn-open-data-loader-t').addEventListener('click', openDataLoaderModal);
+
+    appView.querySelectorAll('.btn-select-level').forEach(btn => {
+      btn.addEventListener('click', () => {
+        playSFX('pop');
+        state.currentLevel = parseInt(btn.dataset.level);
+        saveStateToLocalStorage();
+        renderThemeDetailScreen();
+      });
+    });
 
     const themeImg = document.getElementById('interactive-theme-img');
     if (themeImg) {
@@ -994,75 +1026,83 @@
     bindThemePlayEvents(theme.id);
   }
 
-  function renderThemePlayContent(themeId) {
+  function renderThemePlayContent(themeId, level = 1) {
+    const levelTag = level === 1 ? '🌱 1단계 (기초)' : level === 2 ? '🌿 2단계 (보통)' : '🌳 3단계 (도전)';
+
     if (themeId === 'hangeul') {
+      const words = level === 1 
+        ? [{ text: '사랑', desc: '💖 사-랑' }, { text: '햇살', desc: '☀️ 햇-살' }, { text: '미소', desc: '😊 미-소' }, { text: '친구', desc: '🤝 친-구' }]
+        : level === 2 
+        ? [{ text: '무지개', desc: '🌈 무-지-개' }, { text: '칭찬왕', desc: '👏 칭-찬-왕' }, { text: '글자나무', desc: '🌱 글-자-나-무' }, { text: '이야기', desc: '📖 이-야-기' }]
+        : [{ text: '훈민정음', desc: '📜 훈-민-정-음' }, { text: '세종대왕', desc: '👑 세-종-대-왕' }, { text: '고맙습니다', desc: '💌 고-맙-습-니-다' }, { text: '지혜롭다', desc: '💡 지-혜-롭-다' }];
+
       return `
         <div style="font-size: 13px; color: #333; line-height: 1.4;">
-          <strong>🔤 세종대왕 말놀이 퀴즈:</strong> 아래에서 예쁜 한글 단어를 완성해보세요!
+          <strong>🔤 세종대왕 말놀이 [${levelTag}]:</strong> 아래 예쁜 단어 카드를 완성해보세요!
         </div>
         <div class="interactive-play-area">
-          <div style="font-size: 24px; font-weight: 900; letter-spacing: 4px; color: #2563EB; margin-bottom: 8px;" id="hangeul-word-display">
-            [ ? ? ]
+          <div style="font-size: 22px; font-weight: 900; letter-spacing: 2px; color: #2563EB; margin-bottom: 8px;" id="hangeul-word-display">
+            [ ${words[0].text} ]
           </div>
           <div class="play-choice-grid">
-            <button class="play-choice-btn btn-hangeul-quiz" data-word="사랑">💖 사랑 (사-랑)</button>
-            <button class="play-choice-btn btn-hangeul-quiz" data-word="무지개">🌈 무지개</button>
-            <button class="play-choice-btn btn-hangeul-quiz" data-word="햇살">☀️ 햇살</button>
-            <button class="play-choice-btn btn-hangeul-quiz" data-word="칭찬">👏 칭찬</button>
+            ${words.map(w => `<button class="play-choice-btn btn-hangeul-quiz" data-word="${w.text}">${w.desc}</button>`).join('')}
           </div>
         </div>
       `;
     } else if (themeId === 'number') {
+      const maxCount = level === 1 ? 5 : level === 2 ? 10 : 20;
       return `
         <div style="font-size: 13px; color: #333; line-height: 1.4;">
-          <strong>🔢 알록달록 수세 로봇:</strong> 로봇의 숫자를 1씩 높여 보물 숫자를 완성하세요!
+          <strong>🔢 알록달록 수세 로봇 [${levelTag}]:</strong> 1부터 ${maxCount}까지 터치하며 수세기를 완료하세요!
         </div>
         <div class="interactive-play-area">
           <div style="font-size: 32px; font-weight: 900; color: #7C3AED; margin: 8px 0;" id="number-count-display">
-            🤖 카운터: <span id="robot-num-val">1</span>
+            🤖 카운터: <span id="robot-num-val">1</span> / ${maxCount}
           </div>
-          <button id="btn-count-robot-num" class="theme-play-btn" style="background: linear-gradient(135deg, #7C3AED 0%, #C084FC 100%);">
+          <button id="btn-count-robot-num" data-max="${maxCount}" class="theme-play-btn" style="background: linear-gradient(135deg, #7C3AED 0%, #C084FC 100%);">
             ⚡ 수 세기 카운터 누르기 (+1)
           </button>
         </div>
       `;
     } else if (themeId === 'env') {
+      const bins = level === 1
+        ? ['♻️ 플라스틱함', '📄 종이함']
+        : level === 2
+        ? ['♻️ 플라스틱함', '📄 종이함', '🥫 캔/고철함', '🍾 유리함']
+        : ['♻️ 플라스틱함', '📄 종이함', '🥫 캔/고철함', '🍾 유리함', '🔋 건전지함', '👕 의류수거함'];
       return `
         <div style="font-size: 13px; color: #333; line-height: 1.4;">
-          <strong>🌱 그린 분리수거 게임:</strong> 올바른 재활용 분리수거 통을 터치하세요!
+          <strong>🌱 그린 분리수거 [${levelTag}]:</strong> 알맞은 수거함을 터치해 올바르게 분류하세요!
         </div>
         <div class="interactive-play-area">
-          <div style="font-size: 28px; margin-bottom: 8px;">🍾 페트병 / 종이 / 캔 쓰레기</div>
+          <div style="font-size: 24px; margin-bottom: 8px;">🍾 깨끗하게 분리배출 쏙!</div>
           <div class="play-choice-grid">
-            <button class="play-choice-btn btn-env-recycle" data-type="plastic">♻️ 플라스틱함</button>
-            <button class="play-choice-btn btn-env-recycle" data-type="paper">📄 종이함</button>
-            <button class="play-choice-btn btn-env-recycle" data-type="can">🥫 캔/고철함</button>
-            <button class="play-choice-btn btn-env-recycle" data-type="glass">🍾 유리함</button>
+            ${bins.map(b => `<button class="play-choice-btn btn-env-recycle">${b}</button>`).join('')}
           </div>
         </div>
       `;
     } else if (themeId === 'emotion') {
       return `
         <div style="font-size: 13px; color: #333; line-height: 1.4;">
-          <strong>💖 감정 우체국 마음 처방전:</strong> 오늘 내 마음 기분을 솔직히 골라보세요!
+          <strong>💖 감정 우체국 [${levelTag}]:</strong> 오늘 내 감정 상태를 선택하고 칭찬 처방전을 받으세요!
         </div>
         <div class="interactive-play-area">
           <div class="play-choice-grid">
             <button class="play-choice-btn btn-emotion-pick" data-emo="기쁨">😊 기뻐요!</button>
             <button class="play-choice-btn btn-emotion-pick" data-emo="설렘">🥰 설레요!</button>
             <button class="play-choice-btn btn-emotion-pick" data-emo="속상">😢 속상해요</button>
-            <button class="play-choice-btn btn-emotion-pick" data-emo="화남">😤 화나요</button>
+            <button class="play-choice-btn btn-emotion-pick" data-emo="감사">💌 고마워요</button>
           </div>
         </div>
       `;
     } else {
       return `
         <div style="font-size: 13px; color: #333; line-height: 1.4;">
-          <strong>✨ 체험 미션:</strong> 버튼을 눌러 신나는 미션 활동을 수행하세요!
+          <strong>✨ 체험 미션 [${levelTag}]:</strong> 난이도 단계에 맞춰 신나는 체험을 완료해보세요!
         </div>
         <div class="interactive-play-area">
           <button id="btn-generic-play-action" class="theme-play-btn">
-            🎉 미션 놀이 완료하고 포인트 받기!
+            🎉 ${levelTag} 놀이 완료하고 50P 받기!
           </button>
         </div>
       `;
