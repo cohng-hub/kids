@@ -843,14 +843,11 @@
   function renderDashboardScreen() {
     const html = `
       <div class="dashboard-screen" style="padding: 14px;">
-        <!-- 상단 헤더 & 데이터 불러오기 -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; background: #FFFFFF; padding: 10px 14px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
-          <div style="font-size: 16px; font-weight: 900; color: #1E293B; display: flex; align-items: center; gap: 6px;">
-            🌱 CLASS TREE <span style="font-size: 10px; color: #2563EB; font-weight: 800; background: #EFF6FF; padding: 2px 8px; border-radius: 10px;">10대 테마</span>
+        <!-- 상단 헤더 -->
+        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 12px; background: #FFFFFF; padding: 12px 14px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+          <div style="font-size: 18px; font-weight: 900; color: #1E293B; display: flex; align-items: center; gap: 6px;">
+            🌱 CLASS TREE <span style="font-size: 11px; color: #2563EB; font-weight: 800; background: #EFF6FF; padding: 2px 8px; border-radius: 10px;">10대 테마 놀이</span>
           </div>
-          <button class="season-selector-btn" id="btn-open-data-loader" style="background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%); color: #FFF; border: none; font-weight: 800; padding: 6px 10px; border-radius: 12px; font-size: 11px; cursor: pointer;">
-            📥 데이터 불러오기
-          </button>
         </div>
 
         <!-- 메인 타이틀 -->
@@ -889,8 +886,6 @@
 
     appView.innerHTML = html;
 
-    document.getElementById('btn-open-data-loader').addEventListener('click', openDataLoaderModal);
-
     appView.querySelectorAll('.theme-compact-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const themeId = btn.dataset.id;
@@ -920,6 +915,8 @@
     else if (photos >= step * 1) currentStageIndex = 1;
     else currentStageIndex = 0;
 
+    const activeStage = (theme.stages && theme.stages[currentStageIndex]) || theme.stages[0];
+
     const currentLevel = state.currentLevel || 1;
     const levelBadge = currentLevel === 1 ? '🌱 1단계 (기초)' : currentLevel === 2 ? '🌿 2단계 (보통)' : '🌳 3단계 (도전)';
 
@@ -927,10 +924,8 @@
       <div class="theme-play-screen">
         <div class="top-bar" style="margin-bottom: 14px;">
           <button class="icon-btn" id="btn-back-to-hub" style="width: 36px; height: 36px;">🏠</button>
-          <span style="font-weight: 900; font-size: 14px;">${theme.tag} 전용 놀이 세상</span>
-          <button class="season-selector-btn" id="btn-open-data-loader-t" style="background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%); color: #FFF; border: none; font-weight: 800;">
-            📥 데이터
-          </button>
+          <span style="font-weight: 900; font-size: 15px;">${theme.tag} 전용 놀이 세상</span>
+          <div style="width: 36px;"></div>
         </div>
 
         <div class="theme-play-hero">
@@ -992,7 +987,6 @@
 
     document.getElementById('btn-back-to-hub').addEventListener('click', () => { playSFX('pop'); switchView('dashboard'); });
     document.getElementById('btn-return-dashboard').addEventListener('click', () => { playSFX('pop'); switchView('dashboard'); });
-    document.getElementById('btn-open-data-loader-t').addEventListener('click', openDataLoaderModal);
 
     appView.querySelectorAll('.btn-select-level').forEach(btn => {
       btn.addEventListener('click', () => {
