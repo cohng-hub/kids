@@ -389,6 +389,99 @@
     }
   };
 
+  const STORAGE_KEY = 'classtree_app_state_v2';
+
+  const SAMPLE_PRESETS = {
+    haetsal: {
+      name: '☀️ 7세 햇살반 (중급 달성반)',
+      user: {
+        name: '김행복 어린이',
+        class: '7세 햇살반',
+        points: 850,
+        badges: ['🌱 첫 미소 씨앗 도장', '🔤 한글 말놀이 대장', '⭐ 칭찬 왕국 마스터'],
+        equippedItem: 'item_ribbon',
+        inventory: ['item_ribbon', 'item_bird', 'item_lamp']
+      },
+      classPhotoAuthCount: {
+        hangeul: 420, number: 380, env: 310, bio: 290, team: 350,
+        adapt: 400, digital: 260, book: 480, nature: 340, emotion: 390
+      },
+      targetPhotos: 600,
+      friends: [
+        { id: 1, name: '이민수', photo: 'https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&w=400&q=80', mission: '자음 카드 10개 맞추기 성공! 🔤', likes: 12, liked: true, time: '5분 전 인증 📸' },
+        { id: 2, name: '박지아', photo: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=400&q=80', mission: '예쁜 내 이름 단정한 글씨 쓰기 ✍️', likes: 8, liked: false, time: '20분 전 인증 📸' },
+        { id: 3, name: '최도윤', photo: 'https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=400&q=80', mission: '화살표 블록 코딩 연결 🤖', likes: 15, liked: true, time: '40분 전 인증 📸' },
+        { id: 4, name: '정예은', photo: 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=400&q=80', mission: '환경 보호 잔반 Zero 다 먹기 🍱', likes: 7, liked: false, time: '1시간 전 인증 📸' },
+        { id: 5, name: '강서준', photo: 'https://images.unsplash.com/photo-1595454223600-91fbddbbf255?auto=format&fit=crop&w=400&q=80', mission: '동화책 읽고 엄마와 퀴즈 풀기 📖', likes: 19, liked: true, time: '2시간 전 인증 📸' }
+      ],
+      students: [
+        { name: '김행복', count: '2/2', status: '오늘 2회 완수 🟢' },
+        { name: '이민수', count: '2/2', status: '오늘 2회 완수 🟢' },
+        { name: '박지아', count: '2/2', status: '오늘 2회 완수 🟢' },
+        { name: '최도윤', count: '1/2', status: '오늘 1회 완료 🟡' },
+        { name: '정예은', count: '2/2', status: '오늘 2회 완수 🟢' },
+        { name: '강서준', count: '2/2', status: '오늘 2회 완수 🟢' },
+        { name: '윤아린', count: '1/2', status: '오늘 1회 완료 🟡' },
+        { name: '한지후', count: '0/2', status: '인증 진행중 ⚪' }
+      ]
+    },
+    saessak: {
+      name: '🌱 6세 새싹반 (만렙 성취 모범반)',
+      user: {
+        name: '박희망 어린이',
+        class: '6세 새싹반',
+        points: 2400,
+        badges: ['🌱 첫 미소 씨앗', '👑 학급 칭찬 왕관', '🏆 전설의 클래스트리', '✨ 만점 탐험가'],
+        equippedItem: 'item_bird',
+        inventory: ['item_bird', 'item_dew', 'item_lamp', 'item_ribbon']
+      },
+      classPhotoAuthCount: {
+        hangeul: 590, number: 600, env: 580, bio: 600, team: 595,
+        adapt: 600, digital: 580, book: 600, nature: 590, emotion: 600
+      },
+      targetPhotos: 600,
+      friends: [
+        { id: 101, name: '송다은', photo: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=400&q=80', mission: '분리수거 쓰레기 직접 분류하기 ♻️', likes: 24, liked: true, time: '3분 전 인증 📸' },
+        { id: 102, name: '임현우', photo: 'https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=400&q=80', mission: '친구에게 양보하며 사이좋게 놀기 🤝', likes: 30, liked: true, time: '12분 전 인증 📸' },
+        { id: 103, name: '오세아', photo: 'https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&w=400&q=80', mission: '3분 양치질 깨끗하게 완료 🪥', likes: 18, liked: true, time: '30분 전 인증 📸' }
+      ],
+      students: [
+        { name: '박희망', count: '2/2', status: '오늘 2회 완수 🟢' },
+        { name: '송다은', count: '2/2', status: '오늘 2회 완수 🟢' },
+        { name: '임현우', count: '2/2', status: '오늘 2회 완수 🟢' },
+        { name: '오세아', count: '2/2', status: '오늘 2회 완수 🟢' },
+        { name: '권우진', count: '2/2', status: '오늘 2회 완수 🟢' },
+        { name: '배소율', count: '2/2', status: '오늘 2회 완수 🟢' }
+      ]
+    },
+    yeolmae: {
+      name: '🍎 5세 열매반 (신규 개학 새출발반)',
+      user: {
+        name: '이사랑 어린이',
+        class: '5세 열매반',
+        points: 150,
+        badges: ['🌱 첫 미소 씨앗'],
+        equippedItem: null,
+        inventory: []
+      },
+      classPhotoAuthCount: {
+        hangeul: 45, number: 30, env: 20, bio: 10, team: 25,
+        adapt: 50, digital: 15, book: 35, nature: 20, emotion: 40
+      },
+      targetPhotos: 400,
+      friends: [
+        { id: 201, name: '김태양', photo: 'https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&w=400&q=80', mission: '신발장에 스스로 신발 정리 👟', likes: 4, liked: false, time: '1시간 전 인증 📸' },
+        { id: 202, name: '장나비', photo: 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=400&q=80', mission: '선생님께 밝게 인사는 기본! 👏', likes: 6, liked: true, time: '2시간 전 인증 📸' }
+      ],
+      students: [
+        { name: '이사랑', count: '1/2', status: '오늘 1회 완료 🟡' },
+        { name: '김태양', count: '1/2', status: '오늘 1회 완료 🟡' },
+        { name: '장나비', count: '1/2', status: '오늘 1회 완료 🟡' },
+        { name: '신유준', count: '0/2', status: '인증 진행중 ⚪' }
+      ]
+    }
+  };
+
   const state = {
     role: 'SELECT',
     currentView: 'welcome',
@@ -435,6 +528,246 @@
     ]
   };
 
+  function saveStateToLocalStorage() {
+    try {
+      const dataToSave = {
+        user: state.user,
+        activeThemeId: state.activeThemeId,
+        targetPhotos: state.targetPhotos,
+        classPhotoAuthCount: state.classPhotoAuthCount,
+        friends: state.friends,
+        students: state.students,
+        role: state.role
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
+    } catch (e) {
+      console.warn('LocalStorage save failed:', e);
+    }
+  }
+
+  function loadStateFromLocalStorage() {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.user) state.user = parsed.user;
+        if (parsed.activeThemeId) state.activeThemeId = parsed.activeThemeId;
+        if (parsed.targetPhotos) state.targetPhotos = parsed.targetPhotos;
+        if (parsed.classPhotoAuthCount) state.classPhotoAuthCount = parsed.classPhotoAuthCount;
+        if (parsed.friends) state.friends = parsed.friends;
+        if (parsed.students) state.students = parsed.students;
+        if (parsed.role) state.role = parsed.role;
+      }
+    } catch (e) {
+      console.warn('LocalStorage load failed:', e);
+    }
+  }
+
+  function loadPresetData(presetKey) {
+    const preset = SAMPLE_PRESETS[presetKey];
+    if (!preset) return;
+
+    state.user = JSON.parse(JSON.stringify(preset.user));
+    state.classPhotoAuthCount = JSON.parse(JSON.stringify(preset.classPhotoAuthCount));
+    state.targetPhotos = preset.targetPhotos;
+    state.friends = JSON.parse(JSON.stringify(preset.friends));
+    state.students = JSON.parse(JSON.stringify(preset.students));
+
+    rotateDailyMissions();
+    rotateWeeklyMissions();
+    saveStateToLocalStorage();
+    render();
+
+    playSFX('fanfare');
+    if (window.confetti) confetti({ particleCount: 100, spread: 90, origin: { y: 0.5 } });
+    alert(`📥 [${preset.name}] 데이터가 성공적으로 불러와져 연동되었습니다!`);
+  }
+
+  function generateRandomAIData() {
+    const randomPhotos = Math.floor(Math.random() * 520) + 60;
+    const randomPoints = Math.floor(Math.random() * 1600) + 300;
+
+    state.user.points = randomPoints;
+    state.classPhotoAuthCount[state.activeThemeId] = randomPhotos;
+
+    state.students.forEach(s => {
+      const completedCount = Math.floor(Math.random() * 3);
+      s.count = `${completedCount}/2`;
+      s.status = completedCount === 2 ? '오늘 2회 완수 🟢' : completedCount === 1 ? '오늘 1회 완료 🟡' : '인증 진행중 ⚪';
+    });
+
+    rotateDailyMissions();
+    rotateWeeklyMissions();
+    saveStateToLocalStorage();
+    render();
+
+    playSFX('fanfare');
+    if (window.confetti) confetti({ particleCount: 80, spread: 80, origin: { y: 0.5 } });
+    alert(`🎲 AI 무작위 학급 데이터가 생성되어 적용되었습니다!\n(현재 사진 인증: ${randomPhotos}회 / 보유 포인트: ${randomPoints}P)`);
+  }
+
+  function importJSONData(file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const parsed = JSON.parse(e.target.result);
+        if (parsed.user || parsed.classPhotoAuthCount) {
+          if (parsed.user) state.user = parsed.user;
+          if (parsed.classPhotoAuthCount) state.classPhotoAuthCount = parsed.classPhotoAuthCount;
+          if (parsed.targetPhotos) state.targetPhotos = parsed.targetPhotos;
+          if (parsed.friends) state.friends = parsed.friends;
+          if (parsed.students) state.students = parsed.students;
+          if (parsed.activeThemeId) state.activeThemeId = parsed.activeThemeId;
+
+          saveStateToLocalStorage();
+          render();
+
+          playSFX('fanfare');
+          if (window.confetti) confetti({ particleCount: 100, spread: 100, origin: { y: 0.5 } });
+          alert(`📂 외부 JSON 파일 데이터 불러오기가 완료되었습니다!`);
+        } else {
+          alert('❌ 클래스트리 데이터 형식이 일치하지 않습니다.');
+        }
+      } catch (err) {
+        alert('❌ JSON 데이터 해석 중 오류 발생: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function exportJSONData() {
+    const exportData = {
+      version: '2026.1',
+      exportedAt: new Date().toISOString(),
+      user: state.user,
+      activeThemeId: state.activeThemeId,
+      targetPhotos: state.targetPhotos,
+      classPhotoAuthCount: state.classPhotoAuthCount,
+      friends: state.friends,
+      students: state.students
+    };
+
+    const jsonStr = JSON.stringify(exportData, null, 2);
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `classtree_dataset_${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    playSFX('pop');
+    alert('💾 백업 JSON 파일 다운로드가 실행되었습니다!');
+  }
+
+  function openDataLoaderModal() {
+    playSFX('pop');
+    const existing = document.querySelector('.data-loader-modal-backdrop');
+    if (existing) existing.remove();
+
+    const modalHtml = `
+      <div class="modal-backdrop data-loader-modal-backdrop" style="z-index: 9999;">
+        <div class="modal-content-card" style="max-width: 350px; text-align: left; padding: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 2px solid #E2E8F0; padding-bottom: 10px;">
+            <div style="font-weight: 900; font-size: 16px; color: #1E293B;">📥 학급 데이터 불러오기 모듈</div>
+            <button id="btn-close-data-modal" style="background: none; border: none; font-size: 18px; cursor: pointer;">❌</button>
+          </div>
+
+          <p style="font-size: 12px; color: #64748B; margin-bottom: 14px; line-height: 1.4;">
+            원하는 유치원 학급 데이터 세트, AI 무작위 생성 데이터 또는 외부 JSON 파일 데이터를 선택해 불러올 수 있습니다.
+          </p>
+
+          <div style="margin-bottom: 14px;">
+            <div style="font-size: 11px; font-weight: 800; color: #0284C7; margin-bottom: 6px;">✨ 프리셋 학급 데이터 세트 불러오기</div>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <button class="btn-modal-preset" data-preset="haetsal" style="padding: 10px; border-radius: 12px; background: #F0F9FF; border: 1.5px solid #0284C7; color: #0369A1; font-weight: 800; font-size: 12px; text-align: left; cursor: pointer;">
+                ☀️ 7세 햇살반 불러오기 (인증 420회 / 포인트 850P)
+              </button>
+              <button class="btn-modal-preset" data-preset="saessak" style="padding: 10px; border-radius: 12px; background: #ECFDF5; border: 1.5px solid #10B981; color: #047857; font-weight: 800; font-size: 12px; text-align: left; cursor: pointer;">
+                🌱 6세 새싹반 불러오기 (모범완수 600회 / 만점반)
+              </button>
+              <button class="btn-modal-preset" data-preset="yeolmae" style="padding: 10px; border-radius: 12px; background: #FFF1F2; border: 1.5px solid #F43F5E; color: #BE123C; font-weight: 800; font-size: 12px; text-align: left; cursor: pointer;">
+                🍎 5세 열매반 불러오기 (신규개학 45회 / 첫 출발)
+              </button>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 14px;">
+            <div style="font-size: 11px; font-weight: 800; color: #7C3AED; margin-bottom: 6px;">🎲 AI 무작위 학급 데이터 생성</div>
+            <button id="btn-modal-random-data" style="width: 100%; padding: 10px; border-radius: 12px; background: #F5F3FF; border: 1.5px solid #7C3AED; color: #6D28D9; font-weight: 800; font-size: 12px; cursor: pointer; text-align: center;">
+              ⚡ 실시간 무작위 AI 데이터 즉시 불러오기
+            </button>
+          </div>
+
+          <div style="margin-bottom: 14px;">
+            <div style="font-size: 11px; font-weight: 800; color: #059669; margin-bottom: 6px;">📂 외부 JSON 파일 연동 &amp; 백업</div>
+            <div style="display: flex; gap: 8px;">
+              <button id="btn-modal-import-json" style="flex: 1; padding: 9px; border-radius: 12px; background: #10B981; color: #FFF; border: none; font-weight: 800; font-size: 11px; cursor: pointer;">
+                📂 JSON 파일 불러오기
+              </button>
+              <button id="btn-modal-export-json" style="flex: 1; padding: 9px; border-radius: 12px; background: #059669; color: #FFF; border: none; font-weight: 800; font-size: 11px; cursor: pointer;">
+                💾 JSON 내보내기
+              </button>
+            </div>
+            <input type="file" id="modal-json-file-input" accept=".json" style="display: none;">
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; border-top: 1px solid #F1F5F9; padding-top: 10px;">
+            <button id="btn-modal-reset-data" style="background: none; border: none; color: #EF4444; font-size: 11px; font-weight: 800; cursor: pointer;">
+              🔄 초기 데이터로 리셋
+            </button>
+            <button class="btn-confirm-full" id="btn-close-data-modal-bottom" style="width: 80px; padding: 6px; font-size: 12px; margin: 0;">닫기</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+    const modal = document.querySelector('.data-loader-modal-backdrop');
+    const close = () => { if (modal) modal.remove(); };
+
+    document.getElementById('btn-close-data-modal').addEventListener('click', close);
+    document.getElementById('btn-close-data-modal-bottom').addEventListener('click', close);
+
+    modal.querySelectorAll('.btn-modal-preset').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.preset;
+        loadPresetData(key);
+        close();
+      });
+    });
+
+    document.getElementById('btn-modal-random-data').addEventListener('click', () => {
+      generateRandomAIData();
+      close();
+    });
+
+    const fileInput = document.getElementById('modal-json-file-input');
+    document.getElementById('btn-modal-import-json').addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        importJSONData(file);
+        close();
+      }
+    });
+
+    document.getElementById('btn-modal-export-json').addEventListener('click', () => {
+      exportJSONData();
+    });
+
+    document.getElementById('btn-modal-reset-data').addEventListener('click', () => {
+      if (confirm('기본 초기 데이터로 리셋하시겠습니까?')) {
+        localStorage.removeItem(STORAGE_KEY);
+        location.reload();
+      }
+    });
+  }
+
   function rotateDailyMissions() {
     const theme = THEMES_CATALOG[state.activeThemeId] || THEMES_CATALOG['hangeul'];
     const themeDaily = theme.dailyMissions || DAILY_MISSION_BANK;
@@ -461,6 +794,7 @@
   const bottomNav = document.getElementById('bottom-nav');
 
   function init() {
+    loadStateFromLocalStorage();
     rotateDailyMissions();
     rotateWeeklyMissions();
     bindEvents();
@@ -586,12 +920,15 @@
             <button class="icon-btn" id="btn-go-home" title="역할선택" style="margin-right: 2px;">
               🏠
             </button>
-            <span>7세 햇살반 (20명)</span>
+            <span>${state.user.class} (${state.students.length}명)</span>
           </div>
           
-          <div style="display: flex; gap: 6px;">
+          <div style="display: flex; gap: 5px;">
+            <button class="season-selector-btn" id="btn-open-data-loader" style="background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%); color: #FFF; border: none; font-weight: 800;">
+              <span>📥 데이터 불러오기</span>
+            </button>
             <button class="season-selector-btn" id="btn-open-guide-modal" style="background-color: var(--color-primary-light); color: var(--color-primary-dark); border-color: var(--color-primary-dark);">
-              <span>📖 성장의 도감</span>
+              <span>📖 도감</span>
             </button>
             <button class="season-selector-btn" id="btn-open-season-picker">
               <span>${theme.tag}</span>
@@ -685,6 +1022,7 @@
     appView.innerHTML = html;
 
     document.getElementById('btn-go-home').addEventListener('click', () => { playSFX('pop'); switchView('welcome'); });
+    document.getElementById('btn-open-data-loader').addEventListener('click', openDataLoaderModal);
     document.getElementById('btn-open-guide-modal').addEventListener('click', openGrowthGuideModal);
     document.getElementById('btn-open-season-picker').addEventListener('click', openSeasonPickerModal);
     document.getElementById('btn-open-camera').addEventListener('click', () => { playSFX('pop'); switchView('camera'); });
@@ -1317,6 +1655,40 @@
           </div>
         </div>
 
+        <!-- 📥 데이터 불러오기 & 동기화 섹션 -->
+        <div style="background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%); border-radius: 20px; padding: 16px; margin-bottom: 18px; border: 2px dashed #0284C7;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <h3 style="font-size: 14px; font-weight: 900; color: #0369A1;">📥 학급 데이터 불러오기 &amp; 동기화</h3>
+            <span style="font-size: 10px; font-weight: 800; background: #0284C7; color: #FFF; padding: 2px 8px; border-radius: 10px;">샘플/파일 연동</span>
+          </div>
+          <p style="font-size: 11px; color: #0C4A6E; margin-bottom: 12px; line-height: 1.4;">
+            원하는 학급의 성취 데이터 세트, 외부 JSON 데이터 또는 무작위 샘플 데이터를 즉시 불러올 수 있습니다.
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <button class="btn-load-preset-teacher" data-preset="haetsal" style="padding: 9px; border-radius: 12px; background: #FFF; border: 1.5px solid #0284C7; color: #0369A1; font-weight: 800; font-size: 11px; cursor: pointer;">
+              ☀️ 7세 햇살반 불러오기
+            </button>
+            <button class="btn-load-preset-teacher" data-preset="saessak" style="padding: 9px; border-radius: 12px; background: #FFF; border: 1.5px solid #0284C7; color: #0369A1; font-weight: 800; font-size: 11px; cursor: pointer;">
+              🌱 6세 새싹반 불러오기
+            </button>
+            <button class="btn-load-preset-teacher" data-preset="yeolmae" style="padding: 9px; border-radius: 12px; background: #FFF; border: 1.5px solid #0284C7; color: #0369A1; font-weight: 800; font-size: 11px; cursor: pointer;">
+              🍎 5세 열매반 불러오기
+            </button>
+            <button id="btn-load-random-teacher" style="padding: 9px; border-radius: 12px; background: #FFF; border: 1.5px solid #0284C7; color: #0369A1; font-weight: 800; font-size: 11px; cursor: pointer;">
+              🎲 무작위 AI 생성 불러오기
+            </button>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="btn-import-json-teacher" style="flex: 1; padding: 8px; border-radius: 12px; background: #0284C7; color: #FFF; border: none; font-weight: 800; font-size: 11px; cursor: pointer;">
+              📂 JSON 파일 불러오기
+            </button>
+            <button id="btn-export-json-teacher" style="flex: 1; padding: 8px; border-radius: 12px; background: #0369A1; color: #FFF; border: none; font-weight: 800; font-size: 11px; cursor: pointer;">
+              💾 백업 다운로드
+            </button>
+          </div>
+          <input type="file" id="teacher-json-file-input" accept=".json" style="display: none;">
+        </div>
+
         <button class="role-btn role-btn-child" id="btn-open-digital-cert" style="margin-bottom: 10px;">
           <span>🏆 모바일 1년 수료 디지털 상장 보기</span>
           <span>➔</span>
@@ -1351,9 +1723,26 @@
     document.getElementById('btn-open-digital-cert').addEventListener('click', openDigitalCertificateModal);
     document.getElementById('btn-print-pdf-report').addEventListener('click', () => { playSFX('pop'); window.print(); });
 
+    appView.querySelectorAll('.btn-load-preset-teacher').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.preset;
+        loadPresetData(key);
+      });
+    });
+
+    document.getElementById('btn-load-random-teacher').addEventListener('click', generateRandomAIData);
+    
+    const fileInput = document.getElementById('teacher-json-file-input');
+    document.getElementById('btn-import-json-teacher').addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files[0]) importJSONData(e.target.files[0]);
+    });
+    document.getElementById('btn-export-json-teacher').addEventListener('click', exportJSONData);
+
     document.getElementById('select-target-goal').addEventListener('change', (e) => {
       playSFX('pop');
       state.targetPhotos = parseInt(e.target.value);
+      saveStateToLocalStorage();
       alert(`🎯 1개월 학급 인증 목표 수량이 ${state.targetPhotos}회로 변경되었습니다!`);
       renderTeacherScreen();
     });
@@ -1646,9 +2035,14 @@
           </div>
         </div>
 
-        <button class="role-btn role-btn-child" id="btn-open-digital-cert-profile" style="margin-bottom: 18px; background-color: #FFD23F; color: #3A2500;">
+        <button class="role-btn role-btn-child" id="btn-open-digital-cert-profile" style="margin-bottom: 10px; background-color: #FFD23F; color: #3A2500;">
           <span>🏆 1년 수료 디지털 상장 미리보기</span>
           <span>➔</span>
+        </button>
+
+        <button class="role-btn role-btn-teacher" id="btn-open-data-loader-p" style="margin-bottom: 18px; background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%); color: #FFF;">
+          <span>📥 학급 데이터 불러오기 모듈 실행</span>
+          <span>⚡</span>
         </button>
 
         <div class="section-header">
@@ -1718,6 +2112,7 @@
 
     document.getElementById('btn-go-home-p').addEventListener('click', () => { playSFX('pop'); switchView('welcome'); });
     document.getElementById('btn-open-digital-cert-profile').addEventListener('click', openDigitalCertificateModal);
+    document.getElementById('btn-open-data-loader-p').addEventListener('click', openDataLoaderModal);
 
     appView.querySelectorAll('.shop-buy-coupon-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -1727,6 +2122,7 @@
         if (state.user.points >= cost) {
           playSFX('fanfare');
           state.user.points -= cost;
+          saveStateToLocalStorage();
           if (window.confetti) confetti({ particleCount: 80, spread: 80, origin: { y: 0.5 } });
 
           alert(`🎉 축하합니다!\n"${title}" 교환 성공! (${cost}P 차감)\n\n담임선생님과 부모님 모바일 앱으로 모바일 교환 쿠폰이 발송되었습니다.`);
@@ -1747,6 +2143,7 @@
         if (state.user.equippedItem === id) {
           playSFX('pop');
           state.user.equippedItem = null;
+          saveStateToLocalStorage();
           alert(`✨ "${name}" 장착을 해제했습니다.`);
           renderProfileScreen();
           return;
@@ -1755,6 +2152,7 @@
         if (state.user.inventory.includes(id)) {
           playSFX('fanfare');
           state.user.equippedItem = id;
+          saveStateToLocalStorage();
           alert(`✨ "${name}" 아이템을 내 꼬마 마스코트에 성공적으로 장착했습니다!`);
           renderProfileScreen();
           return;
@@ -1765,6 +2163,7 @@
           state.user.points -= cost;
           state.user.inventory.push(id);
           state.user.equippedItem = id;
+          saveStateToLocalStorage();
           if (window.confetti) confetti({ particleCount: 80, spread: 80, origin: { y: 0.5 } });
           alert(`🎉 축하합니다!\n"${name}" 구매 및 내 꼬마 마스코트 장착 완료! (-${cost}P)`);
           renderProfileScreen();
