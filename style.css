@@ -1039,25 +1039,106 @@ body {
 }
 
 /* ==========================================================================
-   첫 페이지 10대 테마 선택 버튼 그리드 스타일 (First Page 10-Theme Buttons)
+   첫 페이지 10대 테마 선택 2열 컴팩트 버튼 그리드 스타일 (Compact 2-Col Theme Grid)
    ========================================================================== */
 
-.theme-button-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-bottom: 30px;
+.theme-grid-compact {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
-.theme-select-btn {
-  width: 100%;
+.theme-compact-btn {
   background: #FFFFFF;
-  border-radius: 24px;
-  padding: 18px;
-  border: 2.5px solid var(--color-border);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-  text-align: left;
+  border-radius: 18px;
+  padding: 12px 10px;
+  border: 2px solid var(--color-border);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+  text-align: center;
   cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 155px;
+}
+
+.theme-compact-btn:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-primary);
+  box-shadow: 0 6px 16px rgba(43, 122, 65, 0.18);
+  background: #F0FDF4;
+}
+
+.compact-btn-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.compact-btn-badge {
+  font-size: 10px;
+  font-weight: 900;
+  color: var(--color-primary-dark);
+  background: var(--color-primary-light);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.compact-btn-tag {
+  font-size: 9px;
+  font-weight: 800;
+  color: #0369A1;
+  background: #E0F2FE;
+  padding: 2px 6px;
+  border-radius: 8px;
+}
+
+.compact-btn-img {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  margin: 4px 0;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.1));
+  transition: transform 0.2s ease;
+}
+
+.theme-compact-btn:hover .compact-btn-img {
+  transform: scale(1.1);
+}
+
+.compact-btn-title {
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--color-text-main);
+  line-height: 1.2;
+  margin: 2px 0;
+  word-break: keep-all;
+}
+
+.compact-btn-category {
+  font-size: 9px;
+  color: var(--color-text-sub);
+  margin-bottom: 6px;
+}
+
+.compact-btn-play-tag {
+  width: 100%;
+  padding: 6px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #2B7A41 0%, #22C55E 100%);
+  color: #FFFFFF;
+  font-weight: 900;
+  font-size: 10px;
+  text-align: center;
+}
   transition: all 0.25s ease;
   position: relative;
   overflow: hidden;

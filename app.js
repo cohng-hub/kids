@@ -831,101 +831,54 @@
     document.body.setAttribute('data-season-theme', state.activeThemeId);
 
     switch (state.currentView) {
-      case 'welcome': renderWelcomeScreen(); break;
       case 'dashboard': renderDashboardScreen(); break;
       case 'theme-detail': renderThemeDetailScreen(); break;
-      case 'missions': renderMissionsScreen(); break;
-      case 'roadmap': renderRoadmapScreen(); break;
-      case 'camera': renderCameraScreen(); break;
       case 'teacher': renderTeacherScreen(); break;
       case 'profile': renderProfileScreen(); break;
       case 'tv': renderTVScreen(); break;
-      default: renderWelcomeScreen();
+      default: renderDashboardScreen();
     }
-  }
-
-  function renderWelcomeScreen() {
-    const theme = THEMES_CATALOG[state.activeThemeId] || THEMES_CATALOG['hangeul'];
-    const html = `
-      <div class="welcome-screen">
-        <div class="brand-header">
-          <div class="brand-logo">🌱 CLASS TREE</div>
-          <h1 class="welcome-title">환영해요!<br>클래스트리예요 🌱</h1>
-        </div>
-        <div class="hero-3d-card">
-          <img src="./assets/classtree_3d_seed_character.png${CACHE_BUST}" alt="3D Seed Character" class="hero-3d-img">
-        </div>
-        <div class="role-btn-group">
-          <button class="role-btn role-btn-child" id="btn-role-child">
-            <span>🧒 어린이로 시작</span>
-            <span>➔</span>
-          </button>
-          <button class="role-btn role-btn-teacher" id="btn-role-teacher">
-            <span>👩‍🏫 선생님으로 시작</span>
-            <span>➔</span>
-          </button>
-        </div>
-      </div>
-    `;
-
-    appView.innerHTML = html;
-
-    document.getElementById('btn-role-child').addEventListener('click', () => {
-      playSFX('pop');
-      state.role = 'STUDENT';
-      switchView('dashboard');
-    });
-
-    document.getElementById('btn-role-teacher').addEventListener('click', () => {
-      playSFX('pop');
-      state.role = 'TEACHER';
-      switchView('teacher');
-    });
   }
 
   function renderDashboardScreen() {
     const html = `
-      <div class="dashboard-screen">
+      <div class="dashboard-screen" style="padding: 14px;">
         <!-- 상단 헤더 & 데이터 불러오기 -->
-        <div class="top-bar" style="margin-bottom: 14px;">
-          <div class="brand-logo" style="font-size: 18px; font-weight: 900; color: var(--color-primary-dark); display: flex; align-items: center; gap: 6px;">
-            🌱 CLASS TREE
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; background: #FFFFFF; padding: 10px 14px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+          <div style="font-size: 16px; font-weight: 900; color: #1E293B; display: flex; align-items: center; gap: 6px;">
+            🌱 CLASS TREE <span style="font-size: 10px; color: #2563EB; font-weight: 800; background: #EFF6FF; padding: 2px 8px; border-radius: 10px;">10대 테마</span>
           </div>
-          
-          <button class="season-selector-btn" id="btn-open-data-loader" style="background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%); color: #FFF; border: none; font-weight: 800; padding: 6px 12px; border-radius: 14px;">
-            <span>📥 데이터 불러오기</span>
+          <button class="season-selector-btn" id="btn-open-data-loader" style="background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%); color: #FFF; border: none; font-weight: 800; padding: 6px 10px; border-radius: 12px; font-size: 11px; cursor: pointer;">
+            📥 데이터 불러오기
           </button>
         </div>
 
-        <!-- 메인 히어로 타이틀 카드 -->
-        <div class="theme-hub-header" style="text-align: center; padding: 22px 16px; margin-bottom: 20px;">
-          <span style="font-size: 11px; font-weight: 800; background: rgba(255,255,255,0.25); padding: 4px 12px; border-radius: 12px;">유치원 누리과정 10대 테마 놀이</span>
-          <h1 style="font-size: 22px; font-weight: 900; margin: 8px 0; letter-spacing: -0.5px;">🎨 10대 테마 놀이 세상</h1>
-          <p style="font-size: 12px; opacity: 0.95; line-height: 1.4; margin-top: 4px;">
-            원하는 테마 버튼을 터치하여 테마 전용 세상으로 바로 놀이를 시작해보세요!
-          </p>
+        <!-- 메인 타이틀 -->
+        <div style="margin-bottom: 12px; text-align: center;">
+          <h2 style="font-size: 18px; font-weight: 900; color: var(--color-primary-dark); margin: 0 0 2px 0;">🎨 10대 테마 선택하기</h2>
+          <p style="font-size: 11px; color: var(--color-text-sub); margin: 0;">원하는 테마 버튼을 터치하여 바로 놀이 세상으로 진입하세요!</p>
         </div>
 
-        <!-- 🎨 첫 페이지 10대 테마 선택 버튼 그리드 (10 Themes Select Buttons) -->
-        <div class="theme-button-grid">
+        <!-- 🎨 첫 페이지 10대 테마 선택 2열 컴팩트 버튼 그리드 -->
+        <div class="theme-grid-compact">
           ${Object.values(THEMES_CATALOG).map((t, idx) => {
             const currentStage = t.stages[0];
+            const displayTitle = t.name.includes('] ') ? t.name.split('] ')[1] : t.name;
 
             return `
-              <button class="theme-select-btn" data-id="${t.id}">
-                <div class="theme-btn-top">
-                  <span class="theme-btn-num">0${idx + 1}</span>
-                  <span class="theme-btn-category">${t.category}</span>
+              <button class="theme-compact-btn" data-id="${t.id}">
+                <div class="compact-btn-header">
+                  <span class="compact-btn-badge">0${idx + 1}</span>
+                  <span class="compact-btn-tag">${t.tag}</span>
                 </div>
                 
-                <div class="theme-btn-title">${t.name}</div>
-                <div class="theme-btn-desc">${t.desc}</div>
-
-                <img src="${currentStage.image}" alt="${t.name}" class="theme-btn-img">
-
-                <div class="theme-btn-action">
-                  <span>▶ [${t.tag}] 놀이 시작하기</span>
-                  <span>➔</span>
+                <img src="${currentStage.image}" alt="${t.name}" class="compact-btn-img">
+                
+                <div class="compact-btn-title">${displayTitle}</div>
+                <div class="compact-btn-category">${t.category}</div>
+                
+                <div class="compact-btn-play-tag">
+                  <span>▶ 놀이 시작</span>
                 </div>
               </button>
             `;
@@ -938,7 +891,7 @@
 
     document.getElementById('btn-open-data-loader').addEventListener('click', openDataLoaderModal);
 
-    appView.querySelectorAll('.theme-select-btn').forEach(btn => {
+    appView.querySelectorAll('.theme-compact-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const themeId = btn.dataset.id;
         enterThemePlayWorld(themeId);
@@ -972,7 +925,7 @@
     const html = `
       <div class="theme-play-screen">
         <div class="top-bar" style="margin-bottom: 14px;">
-          <button class="icon-btn" id="btn-back-to-hub" style="width: 36px; height: 36px;">❮</button>
+          <button class="icon-btn" id="btn-back-to-hub" style="width: 36px; height: 36px;">🏠</button>
           <span style="font-weight: 900; font-size: 14px;">${theme.tag} 전용 놀이 세상</span>
           <button class="season-selector-btn" id="btn-open-data-loader-t" style="background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%); color: #FFF; border: none; font-weight: 800;">
             📥 데이터
