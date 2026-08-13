@@ -809,6 +809,37 @@
         switchView(view);
       });
     });
+
+    const btnHome = document.getElementById('btn-web-brand-home');
+    const btnThemes = document.getElementById('btn-web-nav-themes');
+    const btnCert = document.getElementById('btn-web-nav-cert');
+    const btnData = document.getElementById('btn-web-nav-data');
+
+    if (btnHome) {
+      btnHome.addEventListener('click', () => {
+        playSFX('pop');
+        switchView('dashboard');
+      });
+    }
+
+    if (btnThemes) {
+      btnThemes.addEventListener('click', () => {
+        playSFX('pop');
+        switchView('dashboard');
+      });
+    }
+
+    if (btnCert) {
+      btnCert.addEventListener('click', () => {
+        openDigitalCertificateModal();
+      });
+    }
+
+    if (btnData) {
+      btnData.addEventListener('click', () => {
+        openDataLoaderModal();
+      });
+    }
   }
 
   function switchView(viewName) {
@@ -842,21 +873,15 @@
 
   function renderDashboardScreen() {
     const html = `
-      <div class="dashboard-screen" style="padding: 14px;">
-        <!-- 상단 헤더 -->
-        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 12px; background: #FFFFFF; padding: 12px 14px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
-          <div style="font-size: 18px; font-weight: 900; color: #1E293B; display: flex; align-items: center; gap: 6px;">
-            🌱 CLASS TREE <span style="font-size: 11px; color: #2563EB; font-weight: 800; background: #EFF6FF; padding: 2px 8px; border-radius: 10px;">10대 테마 놀이</span>
-          </div>
+      <div class="dashboard-screen" style="padding: 10px 4px;">
+        <!-- Web Hero Banner Section -->
+        <div style="background: linear-gradient(135deg, #ECFDF5 0%, #F0F9FF 100%); border: 1.5px solid #A7F3D0; padding: 24px 28px; border-radius: 24px; margin-bottom: 24px; text-align: center; box-shadow: 0 4px 16px rgba(16, 185, 129, 0.08);">
+          <span style="background: #10B981; color: #FFFFFF; font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 14px; letter-spacing: 0.5px; text-transform: uppercase;">Web Platform Edition</span>
+          <h2 style="font-size: 24px; font-weight: 900; color: #065F46; margin: 10px 0 6px 0; letter-spacing: -0.3px;">🎨 유치원 10대 테마 세상을 선택하세요</h2>
+          <p style="font-size: 13px; color: #047857; margin: 0; font-weight: 500;">원하는 테마 카드를 클릭하여 3D 마스코트와 함께하는 1개월 챌린지 놀이를 시작하세요!</p>
         </div>
 
-        <!-- 메인 타이틀 -->
-        <div style="margin-bottom: 12px; text-align: center;">
-          <h2 style="font-size: 18px; font-weight: 900; color: var(--color-primary-dark); margin: 0 0 2px 0;">🎨 10대 테마 선택하기</h2>
-          <p style="font-size: 11px; color: var(--color-text-sub); margin: 0;">원하는 테마 버튼을 터치하여 바로 놀이 세상으로 진입하세요!</p>
-        </div>
-
-        <!-- 🎨 첫 페이지 10대 테마 선택 2열 컴팩트 버튼 그리드 -->
+        <!-- 🎨 Web Responsive 10-Theme Multi-column Grid -->
         <div class="theme-grid-compact">
           ${Object.values(THEMES_CATALOG).map((t, idx) => {
             const currentStage = t.stages[0];
@@ -865,7 +890,7 @@
             return `
               <button class="theme-compact-btn" data-id="${t.id}">
                 <div class="compact-btn-header">
-                  <span class="compact-btn-badge">0${idx + 1}</span>
+                  <span class="compact-btn-badge">${idx < 9 ? '0' + (idx + 1) : (idx + 1)}</span>
                   <span class="compact-btn-tag">${t.tag}</span>
                 </div>
                 

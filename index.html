@@ -21,23 +21,41 @@
 </head>
 <body>
 
-  <!-- Desktop App Container Wrapper -->
+  <!-- Web App Container Wrapper -->
   <div id="desktop-wrapper">
     <div id="phone-container">
-      <!-- App Header Bar -->
-      <div id="app-status-bar">
-        <span class="time">09:41</span>
-        <div class="status-icons">
-          <i class="fa-solid fa-signal"></i>
-          <i class="fa-solid fa-wifi"></i>
-          <i class="fa-solid fa-battery-full"></i>
+      <!-- Web Top Navigation Header -->
+      <header id="web-app-header">
+        <div class="web-brand" id="btn-web-brand-home" style="cursor: pointer;">
+          <span class="web-brand-icon">🌱</span>
+          <div class="web-brand-text">
+            <span class="web-title">CLASS TREE</span>
+            <span class="web-subtitle">유치원 10대 테마 시즌제 챌린지 Web</span>
+          </div>
         </div>
-      </div>
+
+        <nav class="web-header-nav">
+          <button class="web-nav-btn active" id="btn-web-nav-themes">
+            <i class="fa-solid fa-grid-2"></i> 10대 테마 놀이
+          </button>
+          <button class="web-nav-btn" id="btn-web-nav-cert">
+            <i class="fa-solid fa-award"></i> 1년 성취 디지털 상장
+          </button>
+          <button class="web-nav-btn" id="btn-web-nav-data">
+            <i class="fa-solid fa-folder-open"></i> 학급 데이터 관리
+          </button>
+        </nav>
+
+        <div class="web-user-badge">
+          <span class="class-tag"><i class="fa-solid fa-sun"></i> 7세 햇살반</span>
+          <span class="season-tag"><i class="fa-solid fa-sparkles"></i> 2026 시즌</span>
+        </div>
+      </header>
 
       <!-- Active Screen View Container -->
       <main id="app-view"></main>
 
-      <!-- Bottom Navigation Bar (Shown on main views) -->
+      <!-- Bottom Navigation Bar (Hidden on theme selection, displayed when navigating subviews) -->
       <nav id="bottom-nav" class="hidden">
         <button class="nav-item active" data-view="dashboard">
           <div class="nav-icon"><i class="fa-solid fa-tree"></i></div>
